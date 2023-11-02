@@ -1,10 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "wecando/base.html" %}
 
-</body>
-</html>
+{% block main_area %}
+
+    <div class="container my-3 d-flex justify-content-center">
+        <div class="card" style="width: 30rem; border : none;">
+        <form method="post" action="#"><!-- POST 메소드로 데이터를 서버에 전송해주는 폼 생성. -->
+            {% csrf_token %}<!-- 보안을 위해 CSRF 토큰 추가. -->
+            {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+            <!-- 아이디를 입력받는 인풋을 생성. -->
+            <div class="mb-3">
+                <label for="username">아이디</label>
+                <input type="text" class="form-control" name="username" id="username"
+                       value="{{ form.username.value|default_if_none:'' }}">
+            </div>
+            <!-- 패스워드를 입력받는 인풋을 생성. -->
+            <div class="mb-3">
+                <label for="password1">비밀번호</label>
+                <input type="password" class="form-control" name="password1" id="password1"
+                       value="{{ form.password1.value|default_if_none:'' }}">
+            </div>
+            <!-- 패스워드 확인을 입력받는 인풋을 생성. -->
+            <div class="mb-3">
+                <label for="password2">비밀번호 확인</label>
+                <input type="password" class="form-control" name="password2" id="password2"
+                       value="{{ form.password2.value|default_if_none:'' }}">
+            </div>
+            <!-- 메일주소를 입력받는 인풋을 생성. -->
+            <div class="mb-3">
+                <label for="email">이메일</label>
+                <input type="text" class="form-control" name="email" id="email"
+                       value="{{ form.email.value|default_if_none:'' }}">
+            </div>
+
+            <button type="submit" class="btn btn-primary float-end" style="background-color: #FC4C64;">
+                생성하기 <!-- 회원가입 버튼 -->
+            </button>
+        </form>
+        </div>
+    </div>
+
+{% endblock %}
