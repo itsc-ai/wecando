@@ -1,0 +1,50 @@
+<nav class="navbar navbar-expand-lg" style="background-color:#F1E1D9;">
+    <div class="container">
+        <div class="container-fluid">
+            <div class="row h-100 w-100 align-items-center">
+                <div class="col">
+                    <a class="navbar-brand text-white" href="/">
+                        <img src="/static/wecando/image/logo.png" width="40px">
+                    </a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false"
+                            aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                </div>
+                <div class="col">
+                    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+
+                        <!--로그인 버튼 생성 me-auto = ms-auto 같은 개념-->
+                        <ul class="navbar-nav ms-auto">
+                            {% if user.is_authenticated %}
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-white" href="#" role="button"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    {% if user.socialaccount_set.all.first.get_avatar_url %}
+                                    <img class="rounded-circle" width="25px"
+                                         src="{{ user.socialaccount_set.all.first.get_avatar_url }}">
+                                    {% else %}
+                                    <img class="rounded-circle" width="25px"
+                                         src="https://api.dicebear.com/6.x/pixel-art/svg?seed={{ user.username }}">
+                                    {% endif %}
+                                    &nbsp;
+                                    {{ user.username }}
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a class="dropdown-item" href="#}"> log out</a></li>
+                                </ul>
+                            </li>
+                            {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link text-gray" href="#">사용자명</a>
+                            </li>
+                            {% endif %}
+                        </ul>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
