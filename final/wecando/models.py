@@ -287,8 +287,6 @@ class Writen(models.Model):
         managed = False
         db_table = 'writen'
 
-# 테스트 모델들 삭제법을 모르겠음
-
 from django.db import models
 from django.contrib.auth.models import User
 

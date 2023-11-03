@@ -50,8 +50,9 @@ class DiaryCreate(CreateView):
     template_name = "wecando/diary_create.html"
 
 # 일기 작성 페이지 생성
+
 class DiaryWrite(CreateView):
     model = DiaryNew
     fields = ["title", "content"]
-    success_url = "diary_detail/"
+    success_url = "/calendar/"
     template_name = "wecando/diary_write.html"
