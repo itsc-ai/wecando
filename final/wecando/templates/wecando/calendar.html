@@ -24,7 +24,8 @@
     <title>Calendar #10</title>
   </head>
   <body>
-  
+
+{% if user.is_authenticated %}
 
   <div id='calendar-container'>
     <div id='calendar'></div>
@@ -125,5 +126,12 @@
     </script>
 
     <script src="/static/js/main.js"></script>
+
+{%else%}
+    <script type="text/javascript">
+        alert('로그인해주세요');
+        window.location.href='{%url "main_page"%}';
+    </script>
+{%endif%}
   </body>
 </html>

@@ -11,10 +11,10 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Test',
-            fields=[
-                ('test_num', models.AutoField(primary_key=True, serialize=False)),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name='Test',
+        #     fields=[
+        #         ('test_num', models.AutoField(primary_key=True, serialize=False)),
+        #     ],
+        # ),
     ]

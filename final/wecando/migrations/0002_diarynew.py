@@ -12,30 +12,30 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name="DiaryNew",
-            fields=[
-                (
-                    "id",
-                    models.BigAutoField(
-                        auto_created=True,
-                        primary_key=True,
-                        serialize=False,
-                        verbose_name="ID",
-                    ),
-                ),
-                ("title", models.CharField(max_length=30)),
-                ("content", models.TextField(blank=True)),
-                ("create_date", models.DateTimeField(auto_now_add=True)),
-                ("modify_date", models.DateTimeField(blank=True, null=True)),
-                (
-                    "author",
-                    models.ForeignKey(
-                        null=True,
-                        on_delete=django.db.models.deletion.CASCADE,
-                        to=settings.AUTH_USER_MODEL,
-                    ),
-                ),
-            ],
-        ),
+        # migrations.CreateModel(
+        #     name="DiaryNew",
+        #     fields=[
+        #         (
+        #             "id",
+        #             models.BigAutoField(
+        #                 auto_created=True,
+        #                 primary_key=True,
+        #                 serialize=False,
+        #                 verbose_name="ID",
+        #             ),
+        #         ),
+        #         ("title", models.CharField(max_length=30)),
+        #         ("content", models.TextField(blank=True)),
+        #         ("create_date", models.DateTimeField(auto_now_add=True)),
+        #         ("modify_date", models.DateTimeField(blank=True, null=True)),
+        #         (
+        #             "author",
+        #             models.ForeignKey(
+        #                 null=True,
+        #                 on_delete=django.db.models.deletion.CASCADE,
+        #                 to=settings.AUTH_USER_MODEL,
+        #             ),
+        #         ),
+        #     ],
+        # ),
     ]
