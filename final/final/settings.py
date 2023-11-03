@@ -89,8 +89,12 @@ WSGI_APPLICATION = 'final.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'ENGINE': 'django.db.backends.mysql',
+    'NAME': 'wecando',
+    'USER': 'root',
+    'PASSWORD': '0000',
+    'HOST': '127.0.0.1',
+    'PORT': '3307',
     }
 }
 
@@ -137,7 +141,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # allauth site_id
-SITE_ID =6
+SITE_ID =7
 
 # 로그인 후 리디렉션할 페이지
 LOGIN_REDIRECT_URL = '/diary/'

@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<div class="container">
+    <div id="post-area">
+        <!-- post content -->
+        <article>
+            <!-- Post header-->
+            <header class="mb-4">
+                <!-- Post title-->
+                <h1 class="fw-bolder mb-1" style="color: #F4E8C8;">{{ diary_detail.title }}</h1>
+                <h5 style="color: #FFFFFF;">{{ diary_detail.content }}</h5>
+                <!-- Post meta content-->
+                <div class="text-muted fst-italic mb-2">
+                    <p style="color: #F4E8BE;">{{ diary_detail.create_date }} by {{ diary_detail.author | upper }}</p>
+                </div>
+            </header>
+        </article>
+        <hr>
+    </div>
+</div>
