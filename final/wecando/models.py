@@ -270,6 +270,7 @@ class Wise(models.Model):
         db_table = 'wise'
 
 
+# 일기 작성 DB
 class Writen(models.Model):
     writen_num = models.AutoField(primary_key=True)
     id = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='id')
@@ -282,6 +283,7 @@ class Writen(models.Model):
     writen_img = models.IntegerField(blank=True, null=True)
     created_at = models.DateTimeField()
     modified_at = models.DateTimeField()
+    img_file = models.ImageField(null=True, upload_to="wecando/images/%y/%m/%d", blank=True)
 
     class Meta:
         managed = False

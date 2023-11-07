@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
-from wecando.models import Test, DiaryNew
+from wecando.models import Test, DiaryNew, Writen
 from django.shortcuts import render, redirect, get_object_or_404
 # 회원 가입시 필요
 from wecando.forms import UserForm
@@ -52,7 +52,7 @@ class DiaryCreate(CreateView):
 # 일기 작성 페이지 생성
 
 class DiaryWrite(CreateView):
-    model = DiaryNew
-    fields = ["title", "content"]
+    model = Writen
+    fields = ["title", "content", "img_file"]
     success_url = "/calendar/"
     template_name = "wecando/diary_write.html"
