@@ -1,30 +1,87 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
-from wecando.models import Test, DiaryNew
-from django.shortcuts import render, redirect, get_object_or_404
+from wecando.models import Diary, AuthUser, Writen
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 # 회원 가입시 필요
 from wecando.forms import UserForm
 from django.contrib.auth import authenticate, login
+
+from django.db.models.functions import Cast
+from django.db.models import TextField
+from datetime import datetime
 # Create your views here.
 # landing 페이지 생성
 class MainPage(ListView):
-    model = Test
+    model = Diary
     template_name = "wecando/landing.html"
 
 # 내 모든 다이어리 표지 보기 페이지 생성
-class Diary(ListView):
-    model = Test
-    template_name = "wecando/diary.html"
+class DiaryMain(ListView):
+    model = Diary  # 모델을 Review로 설정
+
+    template_name = "wecando/diary.html"  # 템플릿 지정
+
+    # 내가 작성한 리뷰를 불러오기 위해 함수 작성
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        # current_user : 현재 로그인된 사용자를 나타내는 속성
+        current_user = self.request.user.id
+        user_id = AuthUser.objects.get(id = current_user)
+
+        # 작성자가 현재 로그인된 사용자인 Review의 정보만 담아올 수 있게 함
+
+        diary_list = []
+        diary_total = []
+
+        if Diary.objects.filter(id=user_id.id).order_by('-diary_num').count() > 5:
+
+            for i in Diary.objects.filter(id=user_id.id).order_by('-diary_num'):
+
+                diary_list.append(i)
+
+                if len(diary_list) == 5:
+                    diary_total.append(diary_list)
+                    diary_list = []
+            diary_total.append(diary_list)
+            context["diary_list"] = diary_total
+        else:
+            diary_total.append(Diary.objects.filter(id=user_id.id).order_by('-diary_num'))
+            context["diary_list"] = diary_total
+
+        print(diary_total)
+        # context 값 출력
+        return context
 
 # 캘린더 페이지 생성
 class Calendar(ListView):
-    model = Test
+    model = Diary
     template_name = "wecando/calendar.html"
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+
+        pk = (self.kwargs["pk"])
+
+        # current_user : 현재 로그인된 사용자를 나타내는 속성
+        current_user = self.request.user.id
+
+        context["today"] = datetime.today().strftime("%Y-%m-%d")
+
+        context["writen"] = Writen.objects.filter(diary_num = pk).annotate(
+	            created_str = Cast('created_at',TextField()),
+                modified_str = Cast('modified_at', TextField())
+	            )
+
+        print(pk)
+        print(Writen.objects.filter(diary_num = pk))
+        # context 값 출력
+        return context
+
 # 내 일기 상세 보기 페이지 생성
-def diary_detail(request, pk):
-    diary_detail = get_object_or_404(DiaryNew, pk=pk)
-    return render(request, "wecando/diary_detail.html", {"diary_detail":diary_detail})
+class DiaryDetail(DetailView):
+    model = Writen
+    template_name = "wecando/diary_detail.html"
+
 
 # 회원 가입 페이지 생성
 def signup(request):
@@ -46,13 +103,13 @@ def signup(request):
 
 # 내 다이어리 꾸미기 페이지 생성
 class DiaryCreate(CreateView):
-    model = Test
+    model = Diary
     template_name = "wecando/diary_create.html"
 
 # 일기 작성 페이지 생성
 
 class DiaryWrite(CreateView):
-    model = DiaryNew
+    model = Diary
     fields = ["title", "content"]
     success_url = "/calendar/"
     template_name = "wecando/diary_write.html"

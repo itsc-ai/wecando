@@ -237,28 +237,6 @@ class Type(models.Model):
         managed = False
         db_table = 'type'
 
-
-class WecandoDiarynew(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    title = models.CharField(max_length=30)
-    content = models.TextField()
-    create_date = models.DateTimeField()
-    modify_date = models.DateTimeField(blank=True, null=True)
-    author = models.ForeignKey(AuthUser, models.DO_NOTHING, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'wecando_diarynew'
-
-
-class WecandoTest(models.Model):
-    test_num = models.AutoField(primary_key=True)
-
-    class Meta:
-        managed = False
-        db_table = 'wecando_test'
-
-
 class Wise(models.Model):
     wise_num = models.AutoField(primary_key=True)
     type_num = models.ForeignKey(Type, models.DO_NOTHING, db_column='type_num')
@@ -280,24 +258,9 @@ class Writen(models.Model):
     writen_title = models.CharField(max_length=100)
     writen_content = models.CharField(max_length=1000)
     writen_img = models.IntegerField(blank=True, null=True)
-    created_at = models.DateTimeField()
-    modified_at = models.DateTimeField()
+    created_at = models.DateField()
+    modified_at = models.DateField()
 
     class Meta:
         managed = False
         db_table = 'writen'
-
-from django.db import models
-from django.contrib.auth.models import User
-
-# Create your models here.
-class Test(models.Model):
-    test_num = models.AutoField(primary_key=True)
-
-# 일기 작성 모델
-class DiaryNew(models.Model):
-    title = models.CharField(max_length=30)
-    content = models.TextField(blank=True)
-    create_date = models.DateTimeField(auto_now_add=True)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
-    modify_date = models.DateTimeField(null=True, blank=True)
