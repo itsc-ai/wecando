@@ -12,81 +12,104 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
     <style>
-        * {
-          font-family: 'Nanum Pen Script', cursive;
+        html,
+        body {
+          width: 100%;
+          height: 100%;
+          background-color :#F1E1D9;
         }
+        .container {
+          width: 100%;
+          height: 100%;
+
+        }
+
+
     </style>
 
 </head>
-
 <body class="d-flex flex-column min-vh-100">
-
 {% include "wecando/navbar.html" %}<!-- navbar를 불러옴 -->
 
 <div class="container">
     <div class="container my-3 d-flex justify-content-center">
-        <div class="card" style="width: 30rem; border : none;">
-            <form method="post" action="#"><!-- POST 메소드로 데이터를 서버에 전송해주는 폼 생성. -->
-                {% csrf_token %}<!-- 보안을 위해 CSRF 토큰 추가. -->
-                {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+        <div class="row h-100 w-100 align-items-center">
+            <!-- logo -->
+            <div class="col-7">
+                <div class="container text-center">
+                    <h6 style="color: #FF6347;">*주의 사항: Chrome 정책으로 소리가 들리지 않으니 밑의 해결 방법을 참고해주세요.*</h6>
+                    <h5>chrome://settings/content/sound 에 접속</h5>
+                    <img src="{% static 'wecando/image/setting.png' %}"
+                         style="width: 600px;">
+                    <img src="{% static 'wecando/image/sound1.png' %}"
+                         style="width: 330px;">
+                </div>
+            </div>
 
-                <div class="mb-3">
-                    <div>
-                    음악 추천을 위한 소리 설정
+            <div class="col-5">
+                <div class="container my-3 d-flex justify-content-center text-center">
+                    <div class="card" style="width: 25rem; height: 23rem; border : none;">
+                        <div class="card-header text-white align-text-center;" style="background-color:#cd2e57;">
+                            <h1>회원 가입</h1>
+                        </div>
+                        </br>
+
+                        <form method="post" action="#"><!-- POST 메소드로 데이터를 서버에 전송해주는 폼 생성. -->
+                            {% csrf_token %}<!-- 보안을 위해 CSRF 토큰 추가. -->
+                            {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+                            <!-- 아이디를 입력받는 인풋을 생성. -->
+                            <div class="row h-100 w-100 align-items-center">
+                                <div class="col-8">
+                                    <div class="ps-3">
+                                        <label for="username">ID</label>
+                                        <input type="text" class="form-control" name="username" id="username"
+                                               value="{{ form.username.value|default_if_none:'' }}">
+                                    </div>
+                                    <!-- 패스워드를 입력받는 인풋을 생성. -->
+                                    <div class="ps-3">
+                                        <label for="password1">PassWord</label>
+                                        <input type="password" class="form-control" name="password1" id="password1"
+                                               value="{{ form.password1.value|default_if_none:'' }}">
+                                    </div>
+                                    <!-- 패스워드 확인을 입력받는 인풋을 생성. -->
+                                    <div class="ps-3">
+                                        <label for="password2">PassWord Check</label>
+                                        <input type="password" class="form-control" name="password2" id="password2"
+                                               value="{{ form.password2.value|default_if_none:'' }}">
+                                    </div>
+                                    <!-- 메일주소를 입력받는 인풋을 생성. -->
+                                    <div class="ps-3">
+                                        <label for="email">E-Mail</label>
+                                        <input type="text" class="form-control" name="email" id="email"
+                                               value="{{ form.email.value|default_if_none:'' }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-4">
+                                    <!-- 회원가입 버튼 -->
+                                    <button type="submit" class="btn float-end">
+                                        <img src="{% static 'wecando/image/signup2.gif' %}" width="80px">
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <br/>
-                    <img src="{% static 'wecando/image/sound2.png' %}" width="480px">
-                    <br/>
-                    <img src="{% static 'wecando/image/sound.png' %}" width="480px">
-                    <br/>
-                    <img src="{% static 'wecando/image/sound1.png' %}" width="480px">
                 </div>
-
-                <!-- 아이디를 입력받는 인풋을 생성. -->
-                <div class="mb-3">
-                    <label for="username">아이디</label>
-                    <input type="text" class="form-control" name="username" id="username"
-                           value="{{ form.username.value|default_if_none:'' }}">
-                </div>
-                <!-- 패스워드를 입력받는 인풋을 생성. -->
-                <div class="mb-3">
-                    <label for="password1">비밀번호</label>
-                    <input type="password" class="form-control" name="password1" id="password1"
-                           value="{{ form.password1.value|default_if_none:'' }}">
-                </div>
-                <!-- 패스워드 확인을 입력받는 인풋을 생성. -->
-                <div class="mb-3">
-                    <label for="password2">비밀번호 확인</label>
-                    <input type="password" class="form-control" name="password2" id="password2"
-                           value="{{ form.password2.value|default_if_none:'' }}">
-                </div>
-                <!-- 메일주소를 입력받는 인풋을 생성. -->
-                <div class="mb-3">
-                    <label for="email">이메일</label>
-                    <input type="text" class="form-control" name="email" id="email"
-                           value="{{ form.email.value|default_if_none:'' }}">
-                </div>
-
-                <button type="submit" class="btn btn-primary float-end" style="background-color: #FC4C64;">
-                    생성하기 <!-- 회원가입 버튼 -->
-                </button>
-
-            </form>
+            </div>
         </div>
     </div>
-
 </div>
-
-{% include "wecando/footer.html" %}<!-- navbar를 불러옴 -->
-
-<!-- 부트스트랩 사용을 위한 스크립트 -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
-        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
-        crossorigin="anonymous"></script>
+    {% include "wecando/footer.html" %}<!-- navbar를 불러옴 -->
+    <!-- 부트스트랩 사용을 위한 스크립트 -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+            integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+            integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+            crossorigin="anonymous"></script>
 
 </body>
 </html>

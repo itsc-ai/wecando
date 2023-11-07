@@ -109,7 +109,7 @@ class DiaryCreate(CreateView):
 # 일기 작성 페이지 생성
 
 class DiaryWrite(CreateView):
-    model = Diary
-    fields = ["title", "content"]
+    model = Writen
+    fields = ["title", "content", "img_file"]
     success_url = "/calendar/"
     template_name = "wecando/diary_write.html"
