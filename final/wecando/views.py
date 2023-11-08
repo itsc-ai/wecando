@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView
-from wecando.models import Diary, AuthUser, Writen
+from wecando.models import Diary, AuthUser, Writen, Music,Wise,Type
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 # 회원 가입시 필요
 from wecando.forms import UserForm
@@ -60,20 +60,29 @@ class Calendar(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
 
-        pk = (self.kwargs["pk"])
-
+        q = self.kwargs["q"]
         # current_user : 현재 로그인된 사용자를 나타내는 속성
         current_user = self.request.user.id
 
-        context["today"] = datetime.today().strftime("%Y-%m-%d")
+        context["diary_num"] = q
+        today = datetime.today().strftime("%Y-%m-%d")
+        context["today"] = today
+        today_for_check = Writen.objects.filter(diary_num = q).order_by('-created_at')
 
-        context["writen"] = Writen.objects.filter(diary_num = pk).annotate(
-	            created_str = Cast('created_at',TextField()),
-                modified_str = Cast('modified_at', TextField())
-	            )
+        if(today_for_check):
+            if (today_for_check[0].created_at.strftime("%Y-%m-%d") == today):
+                context["today_check"] = 1
+            else:
+                context["today_check"] = 0
 
-        print(pk)
-        print(Writen.objects.filter(diary_num = pk))
+            context["writen"] = Writen.objects.filter(diary_num = q).annotate(
+                    created_str = Cast('created_at',TextField()),
+                    modified_str = Cast('modified_at', TextField())
+                    )
+        else:
+            context["today_check"] = 0
+        print(q)
+        print(Writen.objects.filter(diary_num = q))
         # context 값 출력
         return context
 
@@ -104,12 +113,48 @@ def signup(request):
 # 내 다이어리 꾸미기 페이지 생성
 class DiaryCreate(CreateView):
     model = Diary
-    template_name = "wecando/diary_create.html"
+    template_name = "wecando/diary_form.html"
 
 # 일기 작성 페이지 생성
 
 class DiaryWrite(CreateView):
     model = Writen
     fields = ["writen_title", "writen_content", "img_file"]
-    success_url = "/calendar/"
-    template_name = "wecando/diary_write.html"
+    template_name = "wecando/diary_form.html"
+
+    def form_valid(self, form):
+        print("form_valid start")
+        diary_num = (self.kwargs["q"])
+
+        # current_user : 현재 로그인된 사용자를 나타내는 속성
+        current_user = self.request.user.id
+        user_id = AuthUser.objects.get(id=current_user)
+
+        form.instance.id = user_id
+
+        diary_key = Diary.objects.get(diary_num = diary_num)
+        form.instance.diary_num = diary_key
+
+        music_key = Music.objects.get(music_num=1)
+        form.instance.music_num = music_key
+
+        wise_key = Wise.objects.get(wise_num=1)
+        form.instance.wise_num = wise_key
+
+        type_key = Type.objects.get(type_num=1)
+        form.instance.type_num = type_key
+
+
+        print(form)
+
+        form.save()
+        # 태그와 관련된 작업을 하기 전에 form_valid()의 결괏값을 response에 저장
+        response = super().form_valid(form)
+        return response
+
+    # 성공할 경우 my_review 라는 주소를 가진 페이지로 이동
+    def get_success_url(self):
+        diary_num = (self.kwargs["q"])
+
+        return reverse('diary_detail', kwargs={"pk":Writen.objects.filter(diary_num = diary_num).order_by("-writen_num")[0].pk})
+

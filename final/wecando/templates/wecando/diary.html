@@ -10,7 +10,7 @@
         <!-- 일기장 개수에 따라 for 문으로 생성 -->
         {% for i in p %}
         <div class="col text-center">
-            <a class="btn" href="/calendar/{{i.pk}}/">
+            <a class="btn" href="/calendar/{{i.diary_num}}/">
                 <img width="200px" src="/static/wecando/image/{{i.diary_img}}">
             </a>
         </div>

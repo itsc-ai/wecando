@@ -31,7 +31,12 @@
 {% if user.is_authenticated %}
 
   <div id='calendar-container'>
-    <div id='calendar'></div>
+    <div id='calendar'>
+
+      <img src="/wecando/image/add.png/" class="float-end">
+
+    </div>
+
   </div>
     
     
@@ -73,7 +78,13 @@
             start:"{{i.created_str}}"
           },
         {%endfor%}
-
+        {% if today_check == 0 %}
+          {
+            title:"일기 작성하기",
+            url:"/diary_write/{{diary_num}}/",
+            start:"{{today}}"
+          },
+         {%endif%}
       ]
     });
 
@@ -81,6 +92,8 @@
   });
 
     </script>
+
+
 
     <script src="/static/js/main.js"></script>
 

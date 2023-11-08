@@ -5,7 +5,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 
-  <style>
+<style>
     .center{
         position: absolute;
         top: 50%;
@@ -44,50 +44,57 @@
     top: 10%;
     right: 20%;
   }
+<<<<<<< HEAD:final/wecando/templates/wecando/diary_write.html
   #chooseFile {
     visibility: hidden;
   }
   </style>
 <img src="{% static 'wecando/image/back.png' %}" onclick="history.back();" width="50px" class="backimg" style="float:left;">
 <figure>
-  <img src="{% static 'wecando/image/diary_write2.png' %}"
-     style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
+    <img src="{% static 'wecando/image/diary_write2.png' %}"
+         style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
     <div id="current_date" class="today">
         <script>
             const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
             document.getElementById("current_date").innerHTML = new Date().toLocaleDateString('ko-KR', options);
+
         </script>
     </div>
 
-  <div id="center" class="my-5">
-      <form class="form-inline center" role="form" action="" method="post">
-          {% csrf_token %}
+<div id="center" class="my-5">
+    <form class="form-inline center" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
         <fieldset style="width:300px; border:hidden;">
-          <legend align="center" style="background-color:transparent"></legend>
-          <div class="form-group" style="border:0 solid black display: block;">
-            <label class="form-label" style="width: 500px;">제목:
-                <input type="text" style="background-color:transparent; border:none; width:400px;">
-            </label>
-
-              <textarea class="content"
-                        style="background-color:transparent; resize:none; width:800px; height:870px; items-align:center; border:none;"></textarea>
-          </div>
-            <div class="imgup">
-              <div class="button">
-                <label for="chooseFile">
-                    <img src="{% static 'wecando/image/image.png' %}" width="60px">
+            <legend align="center" style="background-color:transparent"></legend>
+            <div class="form-group" style="border:0 solid black display: block;">
+                <label class="form-label" style="width: 500px;" for="writen_title">제목:
+                    <input type="text" style="background-color:transparent; border:none; width:400px;"
+                           id="writen_title" name="writen_title">
                 </label>
-              </div>
-              <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+
+                <label class="form-label" for="writen_content">
+                </label>
+                <textarea class="content"
+                        style="background-color:transparent; resize:none; width:800px; height:870px; items-align:center; border:none;"
+                        id="writen_content" name="writen_content"></textarea>
+            </div>
+            <div class="imgup">
+                <div class="button">
+                    <label for="img_file">
+                        <img src="{% static 'wecando/image/image.png' %}" width="60px">
+                    </label>
+                </div>
+                <input type="file" id="img_file" name="img_file" accept="image/*" onchange="loadFile(this)">
             </div>
 
             <div class="figcaption2">
-              <button class="btn" type="submit">
-                <img src="{% static 'wecando/image/save.png' %}" width="70px">
-              </button>
+                <button class="btn" type="submit">
+                    <img src="{% static 'wecando/image/save.png' %}" width="70px">
+                </button>
             </div>
         </fieldset>
       </form>
+    {{ form.media }}
   </div>
 </figure>
 {% endblock %}

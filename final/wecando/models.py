@@ -258,8 +258,8 @@ class Writen(models.Model):
     type_num = models.ForeignKey(Type, models.DO_NOTHING, db_column='type_num')
     writen_title = models.CharField(max_length=100)
     writen_content = models.CharField(max_length=1000)
-    created_at = models.DateTimeField()
-    modified_at = models.DateTimeField()
+    created_at = models.DateTimeField(auto_now_add = True)
+    modified_at = models.DateTimeField(auto_now = True)
     img_file = models.ImageField(null=True, upload_to="wecando/images/%y/%m/%d", blank=True)
 
     class Meta:
