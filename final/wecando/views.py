@@ -110,6 +110,6 @@ class DiaryCreate(CreateView):
 
 class DiaryWrite(CreateView):
     model = Writen
-    fields = ["title", "content", "img_file"]
+    fields = ["writen_title", "writen_content", "img_file"]
     success_url = "/calendar/"
     template_name = "wecando/diary_write.html"

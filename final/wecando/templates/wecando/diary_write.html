@@ -8,8 +8,8 @@
   <style>
     .center{
         position: absolute;
-        top: 97%;
-        left: 33.6%;
+        top: 50%;
+        left: 33%;
         transform: translate(-50%, -50%);
     }
     textarea.content {
@@ -21,17 +21,15 @@
     padding: 8px 10px;
     vertical-align: middle;
     }
+
     figure {
       position: relative;
     }
 
-  .figcaption1 {
-    background: rgba(0, 0, 0, 0.0);
-    padding: 1em;
-
+  .imgup {
     position: absolute;
-    top: 0;
-    left: 17%;
+    top: -13%;
+    left: -5%;
   }
   .figcaption2 {
     background: rgba(0, 0, 0, 0.0);
@@ -46,8 +44,11 @@
     top: 10%;
     right: 20%;
   }
+  #chooseFile {
+    visibility: hidden;
+  }
   </style>
-
+<img src="{% static 'wecando/image/back.png' %}" onclick="history.back();" width="50px" class="backimg" style="float:left;">
 <figure>
   <img src="{% static 'wecando/image/diary_write2.png' %}"
      style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
@@ -57,10 +58,6 @@
             document.getElementById("current_date").innerHTML = new Date().toLocaleDateString('ko-KR', options);
         </script>
     </div>
-  <figcaption class="figcaption1">
-    <img src="{% static 'wecando/image/back.png' %}" onclick="history.back();" width="70px" class="backimg">
-  </figcaption>
-</figure>
 
   <div id="center" class="my-5">
       <form class="form-inline center" role="form" action="" method="post">
@@ -75,20 +72,22 @@
               <textarea class="content"
                         style="background-color:transparent; resize:none; width:800px; height:870px; items-align:center; border:none;"></textarea>
           </div>
-          <div class="button">
-            <label for="chooseFile">
-                👉 CLICK HERE! 👈
-            </label>
-         </div>
-    <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+            <div class="imgup">
+              <div class="button">
+                <label for="chooseFile">
+                    <img src="{% static 'wecando/image/image.png' %}" width="60px">
+                </label>
+              </div>
+              <input type="file" id="chooseFile" name="chooseFile" accept="image/*" onchange="loadFile(this)">
+            </div>
+
             <div class="figcaption2">
               <button class="btn" type="submit">
                 <img src="{% static 'wecando/image/save.png' %}" width="70px">
               </button>
             </div>
         </fieldset>
-
       </form>
   </div>
-</div>
+</figure>
 {% endblock %}
