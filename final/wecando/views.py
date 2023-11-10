@@ -75,14 +75,10 @@ class Calendar(ListView):
             else:
                 context["today_check"] = 0
 
-            context["writen"] = Writen.objects.filter(diary_num = q).annotate(
-                    created_str = Cast('created_at',TextField()),
-                    modified_str = Cast('modified_at', TextField())
-                    )
+            context["writen"] = Writen.objects.filter(diary_num = q)
         else:
             context["today_check"] = 0
-        print(q)
-        print(Writen.objects.filter(diary_num = q))
+
         # context 값 출력
         return context
 
@@ -113,7 +109,25 @@ def signup(request):
 # 내 다이어리 꾸미기 페이지 생성
 class DiaryCreate(CreateView):
     model = Diary
-    template_name = "wecando/diary_form.html"
+    fields = ["img_file"]
+    template_name = "wecando/diary_create.html"
+
+    def form_valid(self, form):
+        print("form_valid start")
+
+        # current_user : 현재 로그인된 사용자를 나타내는 속성
+        current_user = self.request.user.id
+        user_id = AuthUser.objects.get(id=current_user)
+
+        form.instance.id = user_id
+
+        form.save()
+        # 태그와 관련된 작업을 하기 전에 form_valid()의 결괏값을 response에 저장
+        response = super().form_valid(form)
+        return response
+
+    def get_success_url(self):
+        return reverse('diary')
 
 # 일기 작성 페이지 생성
 

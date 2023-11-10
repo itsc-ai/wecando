@@ -11,7 +11,7 @@
         {% for i in p %}
         <div class="col text-center">
             <a class="btn" href="/calendar/{{i.diary_num}}/">
-                <img width="200px" src="/static/wecando/image/{{i.diary_img}}">
+                <img width="200px" src="{{i.img_file.url}}">
             </a>
         </div>
         {%endfor%}

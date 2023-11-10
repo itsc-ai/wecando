@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'wecando/base.html' %}
+{% load static %}
+{% block main_area %}
+    <div class="container">
+        <div class="row h-100 w-100 ">
+            <div class="col">
+                <form class="form-inline center" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <input type="file" onchange="readURL(this);" name="img_file" >
+                    <br />
+                    <img id="preview" />
+                    <button class="btn" type="submit">
+                    <img src="{% static 'wecando/image/save.png' %}" width="70px">
+                </button>
+                </form>
+            </div>
+        </div>
+    </div>
 
-</body>
-</html>
+<script>
+    function readURL(input) {
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById('preview').src = e.target.result;
+		};
+		reader.readAsDataURL(input.files[0]);
+	} else {
+		document.getElementById('preview').src = "";
+	}
+}
+</script>
+{% endblock %}

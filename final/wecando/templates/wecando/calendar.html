@@ -33,8 +33,6 @@
   <div id='calendar-container'>
     <div id='calendar'>
 
-      <img src="/wecando/image/add.png/" class="float-end">
-
     </div>
 
   </div>
@@ -75,7 +73,7 @@
           {
             title:"{{i.writen_title}}",
             url:"/diary_detail/{{i.writen_num}}/",
-            start:"{{i.created_str}}"
+            start:"{{i.created_at|date:'Y-m-d'}}"
           },
         {%endfor%}
         {% if today_check == 0 %}

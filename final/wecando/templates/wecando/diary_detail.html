@@ -2,19 +2,24 @@
 {% load static%}
 {% block main_area %}
     <div class="container">
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/uZbB9DssRlA" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
         <div class="row">
             <div class="col">
                 <img src="{% static 'wecando/image/diary_write2.png' %}"
                     style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
-                글 내용
+                {{writen.writen_content}}
             </div>
             <div class="col">
                 <div class="row">
                     <div class="col">
-                        추천 음악
+
+
+                        {{writen.music_num.music_title}}
                     </div>
                     <div class="col">
-                        추천 명언
+                        {{writen.wise_num.wise_content}}
                     </div>
                 </div>
             </div>
