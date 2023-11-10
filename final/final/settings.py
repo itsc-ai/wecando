@@ -109,7 +109,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # allauth site_id
-SITE_ID =7
+SITE_ID =8
 # 로그인 후 리디렉션할 페이지
 LOGIN_REDIRECT_URL = '/diary/'
 # 로그아웃 후 리디렉션할 페이지
@@ -141,5 +141,7 @@ LOGIN_REDIRECT_URL = "/diary/"
 # Logout 성공시 URL 경로
 LOGOUT_REDIRECT_URL = "/"
 
+
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "_media")
+

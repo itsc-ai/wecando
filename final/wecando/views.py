@@ -1,14 +1,21 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
 from wecando.models import Diary, AuthUser, Writen, Music,Wise,Type
 from django.shortcuts import render, redirect, get_object_or_404, reverse
 # 회원 가입시 필요
-from wecando.forms import UserForm
+from wecando.forms import UserForm, WriteUpdateForm
 from django.contrib.auth import authenticate, login
 
 from django.db.models.functions import Cast
 from django.db.models import TextField
 from datetime import datetime
+
+from django.core.exceptions import PermissionDenied
+
+from django.conf import settings
+from django.contrib import messages
+from django.contrib.auth.models import User
+from django.core.mail import EmailMessage
+from .decorators import unauthenticated_user
 # Create your views here.
 # landing 페이지 생성
 class MainPage(ListView):
@@ -83,9 +90,12 @@ class Calendar(ListView):
         return context
 
 # 내 일기 상세 보기 페이지 생성
-class DiaryDetail(DetailView):
-    model = Writen
-    template_name = "wecando/diary_detail.html"
+# class DiaryDetail(DetailView):
+#     model = Writen
+#     template_name = "wecando/diary_detail.html"
+def diary_detail(request, pk):
+    write = get_object_or_404(Writen, pk=pk)
+    return render(request, "wecando/diary_detail.html", {"write":write})
 
 
 # 회원 가입 페이지 생성
@@ -171,4 +181,28 @@ class DiaryWrite(CreateView):
         diary_num = (self.kwargs["q"])
 
         return reverse('diary_detail', kwargs={"pk":Writen.objects.filter(diary_num = diary_num).order_by("-writen_num")[0].pk})
+
+
+
+# 일기 수정
+class DiaryUpdate(UpdateView):
+    model = Writen
+    context_object_name = 'writen'
+    fields = ["writen_title", "writen_content", "img_file"]
+    template_name = "wecando/diary_update.html"
+
+    def get_object(self):
+        writen = get_object_or_404(Writen, pk=self.kwargs['pk'])
+        return writen
+
+    def get_success_url(self):
+        writen_num = (self.kwargs["pk"])
+        return reverse('diary_detail',
+                       kwargs={"pk": Writen.objects.get(writen_num=writen_num).pk})
+
+# 일기 삭제
+def write_delete(request, pk):
+    write = get_object_or_404(Writen, pk=pk)
+    write.delete()
+    return redirect("/calendar/")
 

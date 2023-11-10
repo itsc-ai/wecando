@@ -1,6 +1,11 @@
 {% extends "wecando/base.html" %}
 {% load static%}
 {% block main_area %}
+<style>
+    figure {
+        position: relative;
+    }
+</style>
 <div class="container">
 
     {% if diary_list %}
@@ -9,11 +14,13 @@
     <div class="row h-100 w-100 align-items-center mt-3">
         <!-- 일기장 개수에 따라 for 문으로 생성 -->
         {% for i in p %}
+
         <div class="col text-center">
             <a class="btn" href="/calendar/{{i.diary_num}}/">
                 <img width="200px" src="{{i.img_file.url}}">
             </a>
         </div>
+
         {%endfor%}
     </div>
     {%endfor%}
