@@ -1,12 +1,90 @@
 {% extends "wecando/base.html" %}
 {% load static%}
 {% block main_area %}
+<style>
+    figure {
+        position: relative;
+    }
+
+    .backgroundimg {
+        position: relative;
+    }
+
+    .diarytext {
+        position: relative;
+        top: 16%;
+        left: 15%;
+    }
+
+    .diarydate {
+        position: absolute;
+        top: 12%;
+        right: 40%;
+    }
+
+    .content {
+        border-bottom: solid 1px black;
+    }
+
+    .diaryshow {
+        position: relative;
+        left: 0%;
+    }
+
+    .figcaption1 {
+        background: rgba(0, 0, 0, 0.0);
+        padding: 1em;
+
+        position: absolute;
+        top: 15%;
+        left: 5%;
+    }
+</style>
     <div class="container">
         <div class="row">
             <div class="col">
+            <figure>
                 <img src="{% static 'wecando/image/diary_write2.png' %}"
                     style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
-                글 내용
+
+                <div class="diarydate">
+                    <p>{{ write.created_at }}</p>
+                </div>
+
+                <div class="figcaption1">
+                    <div class="diarytext">
+                        <h5 style="text-decoration: underline; text-align:center;">{{ write.writen_title }}</h5>
+                        <p class="content">{{ write.writen_content }}</p>
+                        {% if write.img_file %}
+                            <img src="{{ write.img_file.url }}" width="300px;">
+                        {% endif %}
+                    </div>
+                </div>
+
+                <a href ="/">
+                    <button style="float-end" type="button" onclick="write_delete();">delete</button>
+                </a>
+
+                <a href ="/diary_update/{{write.pk}}/">
+                    <button style="float-end" type="button" onclick="diary_update();">edit</button>
+                </a>
+
+                <script>
+                function write_delete(){
+                      var res = confirm('삭제하시겠습니까?');
+                      if(res){
+                        window.location.href = "{% url 'write_delete' write.pk %}"
+                        alert("삭제되었습니다.");
+                      }
+                    }
+                function write_update(){
+                      var res = confirm('수정하시겠습니까?');
+                      if(res){
+                        window.location.href = "{% url 'diary_update' write.pk %}"
+                      }
+                    }
+                </script>
+            </figure>
             </div>
             <div class="col">
                 <div class="row">

@@ -50,35 +50,33 @@
     <img src="{% static 'wecando/image/diary_write2.png' %}"
          style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
     <div id="current_date" class="today">
-        <script>
-            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById("current_date").innerHTML = new Date().toLocaleDateString('ko-KR', options);
-
-        </script>
+        {{ writen.create_at }}
     </div>
 
+
 <div id="center" class="my-5">
-    <form class="form-inline center" method="post" enctype="multipart/form-data">
+    <form class="form-inline center" method="post" action="{% url 'diary_update' writen.pk %}" enctype="multipart/form-data">
         {% csrf_token %}
         <fieldset style="width:300px; border:hidden;">
             <legend align="center" style="background-color:transparent"></legend>
             <div class="form-group" style="border:0 solid black display: block;">
                 <label class="form-label" style="width: 500px;" for="writen_title">제목:
                     <input type="text" style="background-color:transparent; border:none; width:400px;"
-                           id="writen_title" name="writen_title">
+                           id="writen_title" name="writen_title" value="{{ writen.writen_title }}">
                 </label>
 
                 <label class="form-label" for="writen_content">
                 </label>
                 <textarea class="content"
                         style="background-color:transparent; resize:none; width:800px; height:870px; items-align:center; border:none;"
-                        id="writen_content" name="writen_content"></textarea>
+                        id="writen_content" name="writen_content">{{ writen.writen_content }}</textarea>
             </div>
             <div class="imgup">
                 <div class="button">
                     <label for="img_file">
                         <img src="{% static 'wecando/image/image.png' %}" width="60px">
-                        <input type="file" id="img_file" name="img_file" accept="image/*" onchange="loadFile(this)" style="visibility: hidden;">
+                        <input type="file" id="img_file" name="img_file" accept="image/*" onchange="loadFile(this)" style="visibility: hidden;"
+                            value="{{ writen.img_file }}">
                     </label>
                 </div>
 
