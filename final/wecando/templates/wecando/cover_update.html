@@ -1,10 +1,182 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+{% load socialaccount %}
+{% providers_media_js %}
+<html>
 <head>
+    <script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>
+    <script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script>
     <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <title>We Can Do</title>
+    <!-- bootstrap -->
+    <link href="{% static 'wecando/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+<!--    <script src="https://kitfontawesome.com/539842d0c4.js" crossorigin="anonymous"></script>-->
 
-</body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+    <style>
+      body {
+        width: 100%;
+        height: 100%;
+        background-color :#F1E1D9;
+      }
+      .container {
+        width: 100%;
+        height: 100%;
+
+      }
+
+
+    </style>
+</head>
+  <body>
+    <div id="container"></div>
+    <script>
+      var width = window.innerWidth;
+      var height = window.innerHeight;
+
+      function update(activeAnchor) {
+        var group = activeAnchor.getParent();
+
+        var topLeft = group.findOne('.topLeft');
+        var topRight = group.findOne('.topRight');
+        var bottomRight = group.findOne('.bottomRight');
+        var bottomLeft = group.findOne('.bottomLeft');
+        var image = group.findOne('Image');
+
+        var anchorX = activeAnchor.x();
+        var anchorY = activeAnchor.y();
+
+        // update anchor positions
+        switch (activeAnchor.getName()) {
+          case 'topLeft':
+            topRight.y(anchorY);
+            bottomLeft.x(anchorX);
+            break;
+          case 'topRight':
+            topLeft.y(anchorY);
+            bottomRight.x(anchorX);
+            break;
+          case 'bottomRight':
+            bottomLeft.y(anchorY);
+            topRight.x(anchorX);
+            break;
+          case 'bottomLeft':
+            bottomRight.y(anchorY);
+            topLeft.x(anchorX);
+            break;
+        }
+
+        image.position(topLeft.position());
+
+        var width = topRight.x() - topLeft.x();
+        var height = bottomLeft.y() - topLeft.y();
+        if (width && height) {
+          image.width(width);
+          image.height(height);
+        }
+      }
+      function addAnchor(group, x, y, name) {
+        var stage = group.getStage();
+        var layer = group.getLayer();
+
+        var anchor = new Konva.Circle({
+          x: x,
+          y: y,
+          stroke: '#666',
+          fill: '#ddd',
+          strokeWidth: 2,
+          radius: 8,
+          name: name,
+          draggable: true,
+          dragOnTop: false,
+        });
+
+        anchor.on('dragmove', function () {
+          update(this);
+        });
+        anchor.on('mousedown touchstart', function () {
+          group.draggable(false);
+          this.moveToTop();
+        });
+        anchor.on('dragend', function () {
+          group.draggable(true);
+        });
+        // add hover styling
+        anchor.on('mouseover', function () {
+          var layer = this.getLayer();
+          document.body.style.cursor = 'pointer';
+          this.strokeWidth(4);
+        });
+        anchor.on('mouseout', function () {
+          var layer = this.getLayer();
+          document.body.style.cursor = 'default';
+          this.strokeWidth(2);
+        });
+
+        group.add(anchor);
+      }
+
+      var stage = new Konva.Stage({
+        container: 'container',
+        width: width,
+        height: height,
+      });
+
+      var layer = new Konva.Layer();
+      stage.add(layer);
+
+      // darth vader
+      var darthVaderImg = new Konva.Image({
+        width: 200,
+        height: 137,
+        image: imageObj1
+      });
+
+      // yoda
+      var yodaImg = new Konva.Image({
+        width: 93,
+        height: 104,
+      });
+
+      var darthVaderGroup = new Konva.Group({
+        x: 180,
+        y: 50,
+        draggable: true,
+      });
+      layer.add(darthVaderGroup);
+      darthVaderGroup.add(darthVaderImg);
+      addAnchor(darthVaderGroup, 0, 0, 'topLeft');
+      addAnchor(darthVaderGroup, 200, 0, 'topRight');
+      addAnchor(darthVaderGroup, 200, 138, 'bottomRight');
+      addAnchor(darthVaderGroup, 0, 138, 'bottomLeft');
+
+      var yodaGroup = new Konva.Group({
+        x: 20,
+        y: 110,
+        draggable: true,
+      });
+      layer.add(yodaGroup);
+      yodaGroup.add(yodaImg);
+      addAnchor(yodaGroup, 0, 0, 'topLeft');
+      addAnchor(yodaGroup, 93, 0, 'topRight');
+      addAnchor(yodaGroup, 93, 104, 'bottomRight');
+      addAnchor(yodaGroup, 0, 104, 'bottomLeft');
+
+      var imageObj1 = new Image();
+      imageObj1.onload = function () {
+        darthVaderImg.image(imageObj1);
+      };
+      imageObj1.src = '/static/wecando/image/save.png';
+
+      var imageObj2 = new Image();
+      imageObj2.onload = function () {
+        yodaImg.image(imageObj2);
+      };
+      imageObj2.src = '/static/wecando/image/save.png';
+    </script>
+  </body>
 </html>
