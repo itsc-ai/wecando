@@ -16,9 +16,25 @@
         {% for i in p %}
 
         <div class="col text-center">
-            <a class="btn" href="/calendar/{{i.diary_num}}/">
+            <div class="row h-100 w-100 align-items-center">
+                <a class="btn" href="/calendar/{{i.diary_num}}/">
                 <img width="200px" src="{{i.img_file.url}}">
             </a>
+            </div>
+            <div class="row h-100 w-100 align-items-center">
+                <div class="col">
+                    <a class="btn" href="/diary_delete/{{i.pk}}/">
+                    삭제
+                </a>
+                </div>
+                <div class="col">
+                    <a class="btn" href="/cover_update/{{i.pk}}">
+                    수정
+                </a>
+                </div>
+
+            </div>
+
         </div>
 
         {%endfor%}

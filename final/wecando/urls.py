@@ -15,5 +15,9 @@ urlpatterns = [
     path('accounts/', include('allauth.urls')),
     path('login/', auth_views.LoginView.as_view(template_name='wecando/landing.html'), name='login'), # django.contrib.auth의 views를 import해서 따로 views에 입력하지 않고 기능 구현
     path("write_delete/<int:pk>/", views.write_delete, name='write_delete'),
+    path("diary_delete/<int:pk>/", views.diary_delete, name='diary_delete'),
     path("diary_update/<int:pk>/", views.DiaryUpdate.as_view(), name="diary_update"),
+    path("diary_check/<int:pk>/", views.DiaryCheck.as_view(), name="diary_check"),
+    path("cover_update/<int:pk>/", views.CoverUpdate.as_view(), name="cover_update"),
+    path("test/", views.test, name='test'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

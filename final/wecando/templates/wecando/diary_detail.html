@@ -59,6 +59,11 @@
                         {% if write.img_file %}
                             <img src="{{ write.img_file.url }}" width="300px;">
                         {% endif %}
+                        {{write.music_num.music_title}}
+                        {{write.wise_num.wise_content}}
+                        <audio autoplay controls loop>
+                            <source src="/static/wecando/music/{{write.music_num.music_file}}" type="audio/mp3">
+                        </audio>
                     </div>
                 </div>
 
