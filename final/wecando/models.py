@@ -171,6 +171,7 @@ class Music(models.Model):
     music_singer = models.CharField(max_length=50)
     music_content = models.CharField(max_length=1000)
     music_id = models.CharField(max_length=100)
+    music_file = models.CharField(max_length=300)
 
     class Meta:
         managed = False
@@ -230,11 +231,11 @@ class SocialaccountSocialtoken(models.Model):
 
 
 class Type(models.Model):
-    type_num = models.AutoField(primary_key=True)
+    type_num = models.IntegerField(primary_key=True)
     type_name = models.CharField(max_length=20)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'type'
 
 class Wise(models.Model):

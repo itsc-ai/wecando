@@ -40,8 +40,10 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.naver',
     # allauth - kakao
     'allauth.socialaccount.providers.kakao',
-    # simple-jwt 추가
-    'rest_framework_simplejwt',
+    # 모델 돌릴 떄 필요
+    "tensorflow",
+    "numpy",
+    "transformers",
 ]
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

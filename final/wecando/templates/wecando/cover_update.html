@@ -1,39 +1,49 @@
-<!DOCTYPE html>
+{% extends 'wecando/base.html' %}
 {% load static %}
-{% load socialaccount %}
-{% providers_media_js %}
-<html>
-<head>
-    <script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>
-    <script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script>
-    <meta charset="UTF-8">
-    <title>We Can Do</title>
-    <!-- bootstrap -->
-    <link href="{% static 'wecando/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
-    <!-- fontawesome -->
+{% block main_area %}
+<script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>
+<script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script>
+<!-- bootstrap -->
+<link href="{% static 'wecando/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<!-- fontawesome -->
 <!--    <script src="https://kitfontawesome.com/539842d0c4.js" crossorigin="anonymous"></script>-->
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
-    <style>
-      body {
-        width: 100%;
-        height: 100%;
-        background-color :#F1E1D9;
-      }
-      .container {
-        width: 100%;
-        height: 100%;
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+    <div class="container">
+        <div class="row h-100 w-100 ">
+            <div class="col">
+                <form class="form-inline center" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                    <input type="file" onchange="readURL(this);" name="img_file" value="{{ diary.img_file }}">
+                    <br />
+                    <img id = "previmg" src="{{ diary.img_file.url }}">
+                    <img id="changeimg" />
+                    <button class="btn" type="submit">
+                    <img src="{% static 'wecando/image/save.png' %}" width="70px">
+                </button>
+                </form>
+            </div>
+        </div>
+    </div>
+<script>
+    function readURL(input) {
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById('changeimg').src = e.target.result;
+			document.getElementById('previmg').src = "";
+		};
+		reader.readAsDataURL(input.files[0]);
+	} else {
+		document.getElementById('preview').src = "";
+	}
+}
+</script>
 
-      }
-
-
-    </style>
-</head>
-  <body>
-    <div id="container"></div>
+<div id="container"></div>
     <script>
       var width = window.innerWidth;
       var height = window.innerHeight;
@@ -178,5 +188,4 @@
       };
       imageObj2.src = '/static/wecando/image/save.png';
     </script>
-  </body>
-</html>
+{% endblock %}
