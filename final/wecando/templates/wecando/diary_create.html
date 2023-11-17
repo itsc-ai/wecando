@@ -1,20 +1,30 @@
 {% extends 'wecando/base.html' %}
 {% load static %}
 {% block main_area %}
-    <div class="container">
-        <div class="row h-100 w-100 ">
-            <div class="col">
-                <form class="form-inline center" method="post" enctype="multipart/form-data">
+    <div class="container my-3">
+        <form class="form-inline center" method="post" enctype="multipart/form-data">
                 {% csrf_token %}
+        <div class="row h-100 w-100 align-items-center">
+            <div class="col">
+
                     <input type="file" onchange="readURL(this);" name="img_file" >
+
                     <br />
-                    <img id="preview" />
-                    <button class="btn" type="submit">
-                    <img src="{% static 'wecando/image/save.png' %}" width="70px">
-                </button>
-                </form>
+
+                    <img id="preview" width="1250px" height = "500px"/>
+
+
+
             </div>
         </div>
+        <div class="row h-100 w-100 ">
+            <div class="col">
+                <button class="btn float-end" type="submit">
+                    <img src="{% static 'wecando/image/save.png' %}" width="70px">
+                </button>
+            </div>
+        </div>
+            </form>
     </div>
 
 <script>

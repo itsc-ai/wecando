@@ -1,110 +1,97 @@
 {% extends "wecando/base.html" %}
 {% load static %}
 {% block main_area %}
-<style>
-    figure {
-        position: relative;
-    }
 
-    .backgroundimg {
-        position: relative;
-    }
+<a type="button" href="/calendar/{{write.diary_num.diary_num}}/" style="float:left; color:#897168; font-size:25px; text-decoration: none;" >
+    calendar
+</a>
 
-    .diarytext {
-        position: relative;
-        top: 16%;
-        left: 15%;
-    }
+<div class="container my-3" style="background-color:#FFFAF4; width: 850px; height: 800px;">
 
-    .diarydate {
-        position: absolute;
-        top: 12%;
-        right: 40%;
-    }
-
-    .content {
-        border-bottom: solid 1px black;
-    }
-
-    .diaryshow {
-        position: relative;
-        left: 0%;
-    }
-
-    .figcaption1 {
-        background: rgba(0, 0, 0, 0.0);
-        padding: 1em;
-
-        position: absolute;
-        top: 15%;
-        left: 5%;
-    }
-</style>
-    <div class="container">
-
-        <div class="row">
-            <div class="col">
+    <div class="row">
+        <div class="col">
             <figure>
-                <img src="{% static 'wecando/image/diary_write2.png' %}"
-                    style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
+                <div class="row mt-2">
+                    <div class="col">
+                        <a href="/" style="text-decoration: none; ">
+                            <button class="btn" style="color:#897168; font-size:25px" type="button"
+                                    onclick="write_delete();">delete
+                            </button>
+                        </a>
 
-                <div class="diarydate">
-                    <p>{{ write.created_at }}</p>
+                        <a href="/diary_update/{{write.pk}}/" style="text-decoration: none;">
+                            <button class="btn" style="color:#897168; font-size:25px" type="button"
+                                    onclick="diary_update();">edit
+                            </button>
+                        </a>
+                    </div>
                 </div>
+                <div class="row my-2">
+                    <div>
+                        <h3 style=" text-align:center;">{{ write.writen_title }}</h3>
+                        <p style=" text-align:right; font-size:20px">{{ write.created_at }}</p>
+                        <p style="text-align:center;  height:400px; font-size:20px">{{ write.writen_content }}</p>
 
-                <div class="figcaption1">
-                    <div class="diarytext">
-                        <h5 style="text-decoration: underline; text-align:center;">{{ write.writen_title }}</h5>
-                        <p class="content">{{ write.writen_content }}</p>
-                        {% if write.img_file %}
-                            <img src="{{ write.img_file.url }}" width="300px;">
-                        {% endif %}
-                        {{write.music_num.music_title}}
-                        {{write.wise_num.wise_content}}
-                        <audio autoplay controls loop>
-                            <source src="/static/wecando/music/{{write.music_num.music_file}}" type="audio/mp3">
-                        </audio>
+
                     </div>
                 </div>
 
-                <a href ="/">
-                    <button style="float-end" type="button" onclick="write_delete();">delete</button>
-                </a>
+                <div class="row ms-2">
 
-                <a href ="/diary_update/{{write.pk}}/">
-                    <button style="float-end" type="button" onclick="diary_update();">edit</button>
-                </a>
+                    <div class="col">
+                        <div class="row mb-4">
+                            <audio autoplay controls loop style="visibility: hidden; width:0px; height:0px;">
+                                <source src="/static/wecando/music/{{write.music_num.music_file}}" type="audio/mp3">
+                            </audio>
+                            <span>🎧 {{write.music_num.music_title}} - <b>{{write.music_num.music_singer}}</b></span>
+
+                        </div>
+                        <div class="row">
+                            <b><span>💬 - {{write.wise_num.wise_author}}</span></b>
+                            <span> "{{write.wise_num.wise_content}}"</span>
+
+
+
+                        </div>
+
+                    </div>
+                    <div class="col">
+                        <div class="row h-100 w-100 align-items-center">
+                            <div class="col">
+                                {% if write.img_file %}
+                                <img src="{{write.img_file.url}}" width="200px"
+                                     style="margin-left: auto; margin-right: auto; display: block;">
+                                {% else %}
+
+                                {%endif%}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
 
                 <script>
-                function write_delete(){
-                      var res = confirm('삭제하시겠습니까?');
-                      if(res){
-                        window.location.href = "{% url 'write_delete' write.pk %}"
-                        alert("삭제되었습니다.");
-                      }
-                    }
-                function write_update(){
-                      var res = confirm('수정하시겠습니까?');
-                      if(res){
-                        window.location.href = "{% url 'diary_update' write.pk %}"
-                      }
-                    }
+                    function write_delete(){
+                          var res = confirm('삭제하시겠습니까?');
+                          if(res){
+                            window.location.href = "{% url 'write_delete' write.pk %}"
+                            alert("삭제되었습니다.");
+                          }
+                        }
+                    function write_update(){
+                          var res = confirm('수정하시겠습니까?');
+                          if(res){
+                            window.location.href = "{% url 'diary_update' write.pk %}"
+                          }
+                        }
                 </script>
+
             </figure>
 
-            </div>
-            <div class="col">
-                <div class="row">
-                    <div class="col">
-
-                        {{writen.music_num.music_title}}
-                    </div>
-                    <div class="col">
-                        {{writen.wise_num.wise_content}}
-                    </div>
-                </div>
-            </div>
         </div>
+
     </div>
+
+</div>
 {% endblock %}
 

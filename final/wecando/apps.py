@@ -52,7 +52,7 @@ class WecandoConfig(AppConfig):
           token_type_ids=test_input['token_type_ids'])
 
     # 가중치 로드
-    model.load_weights('C:/Users/user/Desktop/wecando/final/wecando/static/wecando/model/1110_model_weights.h5')
+    model.load_weights('C:/Users/ITSC/Desktop/Project/WECANDO/final/wecando/static/wecando/model/1110_model_weights.h5')
 
     def sentence_convert_data(data):
         tokens, masks, segment = [], [], []

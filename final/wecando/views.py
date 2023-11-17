@@ -34,6 +34,7 @@ class MainPage(ListView):
     model = Diary
     template_name = "wecando/landing.html"
 
+
 # 내 모든 다이어리 표지 보기 페이지 생성
 class DiaryMain(ListView):
     model = Diary  # 모델을 Review로 설정
@@ -45,8 +46,11 @@ class DiaryMain(ListView):
         context = super().get_context_data()
         # current_user : 현재 로그인된 사용자를 나타내는 속성
         current_user = self.request.user.id
-        user_id = AuthUser.objects.get(id = current_user)
 
+        try:
+            user_id = AuthUser.objects.get(id = current_user)
+        except:
+            return dict()
         # 작성자가 현재 로그인된 사용자인 Review의 정보만 담아올 수 있게 함
 
         diary_list = []
@@ -230,12 +234,15 @@ class DiaryCheck(UpdateView):
 
     def form_valid(self, form):
 
-        if self.request.POST.get("type_num") == 10:
+        if int(self.request.POST.get("type_num")) == 10:
             writen_num = (self.kwargs["pk"])
-            return reverse('diary_detail',
-                           kwargs={"pk": Writen.objects.get(writen_num=writen_num).pk})
+
+            return redirect("/diary_detail/"+str(Writen.objects.get(writen_num=writen_num).pk)+"/")
+
         else:
             type_num = (self.request.POST.get("type_num"))
+            print(type_num)
+            print(type(type_num))
             type_key = Type.objects.get(type_num=type_num)
             form.instance.type_num = type_key
 
@@ -332,8 +339,10 @@ class DiaryUpdate(UpdateView):
 
     def get_success_url(self):
         writen_num = (self.kwargs["pk"])
-        return reverse('diary_detail',
-                       kwargs={"pk": Writen.objects.get(writen_num=writen_num).pk})
+
+        return reverse('diary_check',
+                       kwargs={"pk": Writen.objects.get(writen_num = writen_num).pk})
+
 
 # 일기 삭제
 def write_delete(request, pk):

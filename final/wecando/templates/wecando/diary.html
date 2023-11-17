@@ -5,37 +5,52 @@
     figure {
         position: relative;
     }
+
 </style>
 <div class="container">
 
     {% if diary_list %}
 
     {% for p in diary_list %}
-    <div class="row h-100 w-100 align-items-center mt-3">
+    <div class="row h-100 w-100 align-items-center my-5">
         <!-- 일기장 개수에 따라 for 문으로 생성 -->
         {% for i in p %}
+        <div class="col">
 
-        <div class="col text-center">
-            <div class="row h-100 w-100 align-items-center">
-                <a class="btn" href="/calendar/{{i.diary_num}}/">
-                <img width="200px" src="{{i.img_file.url}}">
-            </a>
+            <div class="card " style="width: 210px; height: 250px; border: none;">
+                <div class="card-body">
+                    <div class="row h-100 w-100 align-items-center">
+                        <div class="row">
+                            <div class="col">
+                                <a class="btn" href="/calendar/{{i.diary_num}}/">
+                                    <img class="diary-image" width="150px" height="150px" src="{{i.img_file.url}}">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row text-center">
+
+                        <div class="col ">
+                            <a class="btn" href="/diary_delete/{{i.pk}}/">
+                                삭제
+                            </a>
+                        </div>
+                        <div class="col">
+                            <a class="btn" href="/cover_update/{{i.pk}}">
+                                수정
+                            </a>
+                        </div>
+
+
+                    </div>
+
             </div>
-            <div class="row h-100 w-100 align-items-center">
-                <div class="col">
-                    <a class="btn" href="/diary_delete/{{i.pk}}/">
-                    삭제
-                </a>
-                </div>
-                <div class="col">
-                    <a class="btn" href="/cover_update/{{i.pk}}">
-                    수정
-                </a>
-                </div>
 
             </div>
-
         </div>
+
 
         {%endfor%}
     </div>
@@ -47,7 +62,7 @@
     아직 일기장이 없습니다.
 </div>
 {%endif%}
-<div style="position: absolute; right: 80px; bottom: 80px;">
+<div style=" position: fixed; right: 80px; bottom: 80px;">
     <a class="btn" href="../diary_create/">
         <img width="100px" src="{% static 'wecando/image/diary_add.png' %}">
     </a>

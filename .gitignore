@@ -9,6 +9,10 @@ __pycache__/
 *.so
 final/wecando/static/wecando/music/*
 final/wecando/static/wecando/model/*
+final/_media/wecando/covers/*
+final/_media/wecando/images/*
+final/wecando/static/wecando/image/*
+
 # Distribution / packaging
 .Python
 env/

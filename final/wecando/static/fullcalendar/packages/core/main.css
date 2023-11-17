@@ -578,9 +578,12 @@ TODO: more distinction between this file and common.css
 .fc-unthemed .fc-list-heading td {
   background: #eee;
 }
-
+/* 오늘 날짜 색상 변경 부분 */
 .fc-unthemed td.fc-today {
-  background: #40e0d0;
+  background: #fff;
+  color:red;
+  font-weight : bold;
+
 }
 
 .fc-unthemed .fc-disabled-day {

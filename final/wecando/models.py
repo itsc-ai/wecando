@@ -103,10 +103,10 @@ class AuthUserUserPermissions(models.Model):
 class Diary(models.Model):
     diary_num = models.AutoField(primary_key=True)
     id = models.ForeignKey(AuthUser, models.DO_NOTHING, db_column='id')
-    img_file = models.ImageField(null=True, upload_to="wecando/covers/%y/%m/%d", blank=True)
+    img_file = models.ImageField(upload_to="wecando/covers/%y/%m/%d")
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'diary'
 
 

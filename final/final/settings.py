@@ -102,8 +102,8 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
-LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ko-kr'
+TIME_ZONE = 'Asia/Seoul'
 USE_I18N = True
 USE_TZ = True
 # Static files (CSS, JavaScript, Images)
@@ -113,7 +113,7 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # allauth site_id
-SITE_ID =8
+SITE_ID =9
 # 로그인 후 리디렉션할 페이지
 LOGIN_REDIRECT_URL = '/diary/'
 # 로그아웃 후 리디렉션할 페이지

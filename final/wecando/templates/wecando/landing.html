@@ -9,24 +9,24 @@
     <!-- bootstrap -->
     <link href="{% static 'wecando/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
     <!-- fontawesome -->
-<!--    <script src="https://kitfontawesome.com/539842d0c4.js" crossorigin="anonymous"></script>-->
+    <!--    <script src="https://kitfontawesome.com/539842d0c4.js" crossorigin="anonymous"></script>-->
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
     <style>
-      html,
-      body {
-        width: 100%;
-        height: 100%;
-        background-color :#F1E1D9;
-      }
-      .container {
-        width: 100%;
-        height: 100%;
+        html,
+        body {
+          width: 100%;
+          height: 100%;
+          background-color :#F1E1D9;
+        }
+        .container {
+          width: 100%;
+          height: 100%;
 
-      }
+        }
 
 
     </style>
@@ -44,13 +44,13 @@
         <div class="col-5">
             <div class="container text-center">
                 <div class="card" style="width: 27rem;"> <!-- 로그인 카드 생성-->
-                    <div class="card-header text-white" style="background-color:#cd2e57;">
+                    <div class="card-header text-white" style="background-color:#897168;">
                         <h1>로그인</h1>
                     </div>
                     </br>
                     <form method="post" action="{% url 'login' %}"> <!-- POST 메소드로 데이터를 서버에 전송해주는 폼 생성. -->
                         {% csrf_token %} <!-- 보안을 위해 CSRF 토큰 추가. -->
-            {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+                        {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
                         <div class="row h-100 w-100 align-items-center">
                             <div class="col-8">
                                 <div class="ps-3">
@@ -68,8 +68,8 @@
                                 </div>
                             </div>
                             <div class="col-4">
-                                <button class="btn" type="submit">
-                                    <img src="{% static 'wecando/image/login3.gif' %}" width="90px">
+                                <button class="btn" type="submit" , style="color : #897168; font-size : 1.5em;">
+                                    LOG IN
                                 </button>
                             </div>
                         </div>
@@ -77,42 +77,58 @@
                         </br>
 
                     </form>
-                    <div class="row">
+
+                    <div class="row h-100 w-100 align-items-center mb-2">
+                       <div class="col">
+
+                            <a class="btn" href="/signup/" , style="color : #897168; font-size : 19px;">
+                                SIGN UP
+                            </a>
+                        </div>
                         <div class="col">
-                            <a href="/password_reset/">비밀번호 찾기</a>
+                            <a class="btn" href="/password_reset/" style="color : #897168; font-size : 19px;">비밀번호 찾기</a>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row h-100 w-100 align-items-center">
+
                         <div class="col">
-                        <a href="/signup/">
-                            <img src="{% static 'wecando/image/signup3.gif' %}" width="70px">
-                        </a>
+                            <form action="{% provider_login_url 'google' %}" method='post'>
+                                {% csrf_token %}
+                                <button class="btn" role="button"><img width="60px"
+                                                                       src="{% static 'wecando/image/google_icon.png' %}">
+                                </button>
+                            </form>
                         </div>
                         <div class="col">
-                    <form action="{% provider_login_url 'google' %}" method='post'>
-                        {% csrf_token %}
-                        <button class="btn" role="button"><img width="60px" src="{% static 'wecando/image/google_icon.png' %}"></button>
-                    </form>
+                            <form action="{% provider_login_url 'naver' %}" method='post'>
+                                {% csrf_token %}
+                                <button class="btn" role="button"><img width="60px"
+                                                                       src="{% static 'wecando/image/naver_icon.png' %}">
+                                </button>
+                            </form>
                         </div>
-                    <div class="col">
-                    <form action="{% provider_login_url 'naver' %}" method='post'>
-                        {% csrf_token %}
-                        <button class="btn" role="button"><img width="60px" src="{% static 'wecando/image/naver_icon.png' %}"></button>
-                    </form>
+                        <div class="col">
+                            <form action="{% provider_login_url 'kakao' %}" method='post'>
+                                {% csrf_token %}
+                                <button class="btn" role="button"><img width="60px"
+                                                                       src="{% static 'wecando/image/kakao_icon.png' %}">
+                                </button>
+                            </form>
+                        </div>
                     </div>
-                        <div class="col">
-                    <form action="{% provider_login_url 'kakao' %}" method='post'>
-                        {% csrf_token %}
-                        <button class="btn" role="button"><img width="60px" src="{% static 'wecando/image/kakao_icon.png' %}"></button>
-                    </form>
-                            </div>
-                        </div>
                 </div>
             </div>
         </div>
 
     </div>
+{% if user.is_authenticated %}
+    <script type="text/javascript">
 
+        window.location.href='/accounts/logout';
+        <!-- 동작안함 -->
+        alert('로그아웃 되었습니다.');
+    </script>
+{% endif %}
 </div>
 
 <!-- 부트스트랩 사용을 위한 스크립트 -->

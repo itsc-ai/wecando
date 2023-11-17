@@ -5,116 +5,101 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 
-<style>
-    .center{
-        position: absolute;
-        top: 50%;
-        left: 33%;
-        transform: translate(-50%, -50%);
-    }
-    textarea.content {
-    background-image:
-        linear-gradient(to right, transparent 10px, transparent 10px),
-        linear-gradient(to left, transparent 10px, transparent 10px),
-        repeating-linear-gradient(transparent, transparent 30px, #ccc 10px, #ccc 31px, transparent 10px);
-    line-height: 31px;
-    padding: 8px 10px;
-    vertical-align: middle;
-    }
-
-    figure {
-      position: relative;
-    }
-
-  .imgup {
-    position: absolute;
-    top: -13%;
-    left: -5%;
-  }
-  .figcaption2 {
-    background: rgba(0, 0, 0, 0.0);
-    padding: 1em;
-
-    position: absolute;
-    bottom: -12%;
-    left:220%;
-    }
-  .today {
-    position: absolute;
-    top: 10%;
-    right: 20%;
-  }
+<button onclick="history.back();"  class="btn"
+     style="float:left; color:#897168; font-size:20px;" >
+    <- BACK
+</button>
+<style> body {
+            background-color: #FEFCF3;
+       }
 
 </style>
-<img src="{% static 'wecando/image/back.png' %}" onclick="history.back();" width="50px" class="backimg"
-     style="float:left;">
-<figure>
-    <img src="{% static 'wecando/image/diary_write2.png' %}"
-         style="width: 850px; display: block; margin: 0 auto;" class="backgroundimg">
-    <div id="current_date" class="today">
-        {{ writen.create_at }}
+<div class="container" style="height:500px">
+    <div class="row h-100 w-100 align-items-center">
+        <div class="col-7">
+            <div class="container text-center">
+                <h4>{{writen.writen_title}}</h4>
+                {{writen.writen_content}}
+            </div>
+        </div>
+        <div class="col-5">
+            <div class="container text-center">
+                <div class="card" style="width: 27rem; border : none;background-color:#FEFCF3;" > <!-- 로그인 카드 생성-->
+
+                    <h1  style="color:#897168;">감정 분류 결과</h1>
+                    </br>
+                    <form class="form-inline center ms-4" method="post"
+                          enctype="multipart/form-data"> <!-- POST 메소드로 데이터를 서버에 전송해주는 폼 생성. -->
+                        {% csrf_token %} <!-- 보안을 위해 CSRF 토큰 추가. -->
+                        {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+                        <div class="row h-100 w-100 align-items-center">
+                            <div class="col-9">
+                                <div style="visibility: hidden; width:0px; height:0px;">
+                                    <label class="form-label" style="width: 500px;" for="writen_title">제목:
+                                        <input type="text" style="background-color:transparent; border:none; "
+                                               id="writen_title" name="writen_title" value="{{ writen.writen_title }}">
+                                    </label>
+
+                                    <label class="form-label" for="writen_content">
+                                    </label>
+                                    <textarea class="content"
+                                              style="background-color:transparent; resize:none; items-align:center; border:none;"
+                                              id="writen_content"
+                                              name="writen_content">{{ writen.writen_content }}
+                                </textarea>
+                                    <div class="imgup" style="visibility: hidden; width: 0px; height:0px;">
+                                        <div class="button">
+                                            <label for="img_file">
+                                                <img src="{% static 'wecando/image/image.png' %}" width="60px">
+                                                <input type="file" id="img_file" name="img_file" accept="image/*"
+                                                       onchange="loadFile(this)"
+                                                       style="visibility: hidden;"
+                                                       value="{{ writen.img_file }}">
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    저희가 분석한 감정은 <b>{{writen.type_num.type_name}}</b>입니다. <br/>
+                                    잘못 분석했다면 아래에서 올바른 감정을 선택해주세요.
+                                </div>
+
+                                <div class="type">
+                                    <div class="input-group mb-3">
+                                        <label class="input-group-text" for="type_num">분류</label>
+                                        <select class="form-select" id="type_num" name="type_num">
+                                            <option selected value="10">잘 분류했어요</option>
+                                            <option value="0">기쁨</option>
+                                            <option value="1">사랑</option>
+                                            <option value="2">슬픔</option>
+                                            <option value="3">분노</option>
+                                            <option value="4">걱정</option>
+                                            <option value="5">중립</option>
+
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-3">
+                                    <button class="btn" type="submit" style="color:#897168; font-size:30px">
+                                        SAVE
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </br>
+
+
+                    </form>
+                    {{ form.media }}
+                </div>
+            </div>
+        </div>
+
     </div>
 
+</div>
 
-    <div id="center" class="my-5">
-        <form class="form-inline center" method="post" action="{% url 'diary_update' writen.pk %}"
-              enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset style="width:300px; border:hidden;">
-                <legend align="center" style="background-color:transparent"></legend>
-                <div class="form-group" style="border:0 solid black display: block;">
-                    <label class="form-label" style="width: 500px;" for="writen_title">제목:
-                        <input type="text" style="background-color:transparent; border:none; width:400px;"
-                               id="writen_title" name="writen_title" value="{{ writen.writen_title }}">
-                    </label>
-
-                    <label class="form-label" for="writen_content">
-                    </label>
-                    <textarea class="content"
-                              style="background-color:transparent; resize:none; width:800px; height:870px; items-align:center; border:none;"
-                              id="writen_content" name="writen_content">{{ writen.writen_content }}</textarea>
-                </div>
-                <div class="imgup">
-                    <div class="button">
-                        <label for="img_file">
-                            <img src="{% static 'wecando/image/image.png' %}" width="60px">
-                            <input type="file" id="img_file" name="img_file" accept="image/*" onchange="loadFile(this)"
-                                   style="visibility: hidden;"
-                                   value="{{ writen.img_file }}">
-                        </label>
-                    </div>
-
-                </div>
-
-                <div>
-                    모델이 분석한 감정은 {{writen.type_num.type_name}}입니다.
-                    모델이 잘못 분석했다면 아래에서 올바른 감정을 선택해주세요.
-                </div>
-
-                <div class="type">
-                    <div class="input-group mb-3">
-                        <label class="input-group-text" for="type_num">분류</label>
-                        <select class="form-select" id="type_num" name="type_num">
-                            <option selected value="10">감정을 골라주세요</option>
-                            <option value="0">기쁨</option>
-                            <option value="1">사랑</option>
-                            <option value="2">슬픔</option>
-                            <option value="3">분노</option>
-                            <option value="4">걱정</option>
-                            <option value="5">중립</option>
-
-                        </select>
-                    </div>
-                </div>
-
-                <div class="figcaption2">
-                    <button class="btn" type="submit">
-                        <img src="{% static 'wecando/image/save.png' %}" width="70px">
-                    </button>
-                </div>
-            </fieldset>
-        </form>
-        {{ form.media }}
-    </div>
-</figure>
 {% endblock %}
