@@ -26,7 +26,8 @@ from django.core.exceptions import PermissionDenied
 # 모델 돌릴때 필요 (설치해야함)
 import tensorflow as tf
 import numpy as np
-from transformers import TFBertModel, BertTokenizer
+from transformers import TFBertModel, BertTokenizer,DistilBertTokenizer, DistilBertForSequenceClassification
+import torch
 
 # Create your views here.
 # landing 페이지 생성
@@ -109,7 +110,8 @@ class Calendar(ListView):
 #일기 상세 보기
 def diary_detail(request, pk):
     write = get_object_or_404(Writen, pk=pk)
-    return render(request, "wecando/diary_detail.html", {"write":write})
+    len_content = len(write.writen_content)
+    return render(request, "wecando/diary_detail.html", {"write":write, "len_content" : len_content})
 
 
 # 회원 가입 페이지 생성
@@ -172,18 +174,34 @@ class DiaryWrite(CreateView):
         diary_key = Diary.objects.get(diary_num = diary_num)
         form.instance.diary_num = diary_key
 
-        def lyrics_evaluation_predict(sentence):
-            data_x = WecandoConfig.sentence_convert_data(sentence)  # 문장을 모델 입력 형식으로 변환
-            predict = WecandoConfig.model.predict(data_x)
-            predict_value = np.ravel(predict[0])
-            predict_emotion: {0: '기쁨', 1: '사랑', 2: '슬픔', 3: '분노', 4: '걱정', 5: '중립'}
-            # 예측된 클래스의 인덱스를 찾기.
-            predicted_class = np.argmax(predict_value)
+        content = self.request.POST.get("writen_content")
+        ko = 0
+        eng = 0
+        for i in content:
+            if (ord(i) >= 65 and ord(i) <=90) or (ord(i) >= 97 and ord(i) <= 122):
+                eng = eng + 1
+            else:
+                ko =  ko + 1
 
-            return predicted_class
+        print(ko , eng)
 
-        a = lyrics_evaluation_predict(self.request.POST.get("writen_content"))
-        print(a)
+        if ko >= eng:
+            def lyrics_evaluation_predict(sentence):
+                data_x = WecandoConfig.sentence_convert_data(sentence)  # 문장을 모델 입력 형식으로 변환
+                predict = WecandoConfig.model_ko.predict(data_x)
+                predict_value = np.ravel(predict[0])
+                predict_emotion: {0: '기쁨', 1: '사랑', 2: '슬픔', 3: '분노', 4: '걱정', 5: '중립'}
+                # 예측된 클래스의 인덱스를 찾기.
+                predicted_class = np.argmax(predict_value)
+
+                return predicted_class
+
+            a = lyrics_evaluation_predict(self.request.POST.get("writen_content"))
+            print("한국어 모델 사용 " + str(a))
+        else:
+            a = WecandoConfig.predict_emotion(self.request.POST.get("writen_content"))
+            print("영어 모델 사용 " + str(a))
+
         type_key = Type.objects.get(type_num=a)
         form.instance.type_num = type_key
 
@@ -293,18 +311,34 @@ class DiaryUpdate(UpdateView):
 
     def form_valid(self, form):
 
-        def lyrics_evaluation_predict(sentence):
-            data_x = WecandoConfig.sentence_convert_data(sentence)  # 문장을 모델 입력 형식으로 변환
-            predict = WecandoConfig.model.predict(data_x)
-            predict_value = np.ravel(predict[0])
-            predict_emotion: {0: '기쁨', 1: '사랑', 2: '슬픔', 3: '분노', 4: '걱정', 5: '중립'}
-            # 예측된 클래스의 인덱스를 찾기.
-            predicted_class = np.argmax(predict_value)
+        content = self.request.POST.get("writen_content")
+        ko = 0
+        eng = 0
+        for i in content:
+            if (ord(i) >= 65 and ord(i) <= 90) or (ord(i) >= 97 and ord(i) <= 122):
+                eng = eng + 1
+            else:
+                ko = ko + 1
 
-            return predicted_class
+        print(ko, eng)
 
-        a = lyrics_evaluation_predict(self.request.POST.get("writen_content"))
-        print(a)
+        if ko >= eng:
+            def lyrics_evaluation_predict(sentence):
+                data_x = WecandoConfig.sentence_convert_data(sentence)  # 문장을 모델 입력 형식으로 변환
+                predict = WecandoConfig.model_ko.predict(data_x)
+                predict_value = np.ravel(predict[0])
+                predict_emotion: {0: '기쁨', 1: '사랑', 2: '슬픔', 3: '분노', 4: '걱정', 5: '중립'}
+                # 예측된 클래스의 인덱스를 찾기.
+                predicted_class = np.argmax(predict_value)
+
+                return predicted_class
+
+            a = lyrics_evaluation_predict(self.request.POST.get("writen_content"))
+            print("한국어 모델 사용 " + str(a))
+        else:
+            a = WecandoConfig.predict_emotion(self.request.POST.get("writen_content"))
+            print("영어 모델 사용 " + str(a))
+
         type_key = Type.objects.get(type_num=(a))
         form.instance.type_num = type_key
 
@@ -419,72 +453,83 @@ class CoverUpdate(UpdateView):
 
         return reverse('diary')
 
+class Analysis(ListView):
+    model = Writen
+    template_name = "wecando/analysis.html"
+
+class CoverCreate(ListView):
+    model = Diary
+    template_name = "wecando/cover_create.html"
+
 def test(request):
-    def lyrics_evaluation_predict(sentence):
-        data_x = WecandoConfig.sentence_convert_data(sentence)  # 문장을 모델 입력 형식으로 변환
-        predict = WecandoConfig.model.predict(data_x)
-        predict_value = np.ravel(predict[0])
-        predict_emotion: {0: '기쁨', 1: '사랑', 2: '슬픔', 3: '분노', 4: '걱정', 5: '중립'}
-        # 예측된 클래스의 인덱스를 찾기.
-        predicted_class = np.argmax(predict_value)
-        if predicted_class == 0:
-            print("(기쁨 확률: {:.2f}) 기쁨을 나타내는 문장입니다.".format(predict_value[predicted_class]))
-            a = "기쁨 확률:" + str(predict_value[predicted_class]) + " 기쁨을 나타내는 문장입니다."
 
-        elif predicted_class == 1:
-            print("(사랑 확률: {:.2f}) 사랑을 나타내는 문장입니다.".format(predict_value[predicted_class]))
-            a = "사랑 확률:" + str(predict_value[predicted_class]) + " 사랑을 나타내는 문장입니다."
 
-        elif predicted_class == 2:
-            print("(슬픔 확률: {:.2f}) 슬픔을 나타내는 문장입니다.".format(predict_value[predicted_class]))
-            a = "슬픔 확률:" + str(predict_value[predicted_class]) + " 슬픔을 나타내는 문장입니다."
-
-        elif predicted_class == 3:
-            print("(분노 확률: {:.2f} 분노를 나타내는 문장입니다.)".format(predict_value[predicted_class]))
-            a = "분노 확률:" + str(predict_value[predicted_class]) + " 분노을 나타내는 문장입니다."
-
-        elif predicted_class == 4:
-            print("(걱정 확률: {:.2f} 걱정을 나타내는 문장입니다.)".format(predict_value[predicted_class]))
-            a = "걱정 확률:" + str(predict_value[predicted_class]) + " 걱정을 나타내는 문장입니다."
-
-        elif predicted_class == 5:
-            print("(중립 확률: {:.2f} 중립을 나타내는 문장입니다.)".format(predict_value[predicted_class]))
-            a = "중립 확률:" + str(predict_value[predicted_class]) + " 중립을 나타내는 문장입니다."
-
-        else:
-            a = "잘못된 형식의 문장입니다."
-
-        return a
-    a = lyrics_evaluation_predict("""Will it be a pavement or a sidewalk
-When I finally lay my eyes on you?
-Someone I've already loved
-Or will you find your way out of the blue?
-Will it be my flat or your apartment
-When I finally realise I do?
-Will we meet on Baker Street
-Or find ourselves on Melrose Avenue?
-I don't know who you are
-But I'll save you a seat
-Hang my coat on a chair next to me
-I tried to reassure the waiter
-Say you're down the street
-He laughed at me
-So here's to you
-The most beautiful thing
-that I have never seen
-Someone on a screen asked me a question
-Something about what love means to me
-Maybe it's just circumstance
-Or general compatibility
-I don't know who you are
-But I'll save you a seat
-Hang my coat on a chair next to me
-I tried to reassure the waiter
-Say you're down the street
-He laughed at me
-So here's to you
-The most beautiful thing
-that I have never seen""")
+    a = WecandoConfig.predict_emotion("너무 재미있다")
+#     def lyrics_evaluation_predict(sentence):
+#         data_x = WecandoConfig.sentence_convert_data(sentence)  # 문장을 모델 입력 형식으로 변환
+#         predict = WecandoConfig.model_ko.predict(data_x)
+#         predict_value = np.ravel(predict[0])
+#         predict_emotion: {0: '기쁨', 1: '사랑', 2: '슬픔', 3: '분노', 4: '걱정', 5: '중립'}
+#         # 예측된 클래스의 인덱스를 찾기.
+#         predicted_class = np.argmax(predict_value)
+#         if predicted_class == 0:
+#             print("(기쁨 확률: {:.2f}) 기쁨을 나타내는 문장입니다.".format(predict_value[predicted_class]))
+#             a = "기쁨 확률:" + str(predict_value[predicted_class]) + " 기쁨을 나타내는 문장입니다."
+#
+#         elif predicted_class == 1:
+#             print("(사랑 확률: {:.2f}) 사랑을 나타내는 문장입니다.".format(predict_value[predicted_class]))
+#             a = "사랑 확률:" + str(predict_value[predicted_class]) + " 사랑을 나타내는 문장입니다."
+#
+#         elif predicted_class == 2:
+#             print("(슬픔 확률: {:.2f}) 슬픔을 나타내는 문장입니다.".format(predict_value[predicted_class]))
+#             a = "슬픔 확률:" + str(predict_value[predicted_class]) + " 슬픔을 나타내는 문장입니다."
+#
+#         elif predicted_class == 3:
+#             print("(분노 확률: {:.2f} 분노를 나타내는 문장입니다.)".format(predict_value[predicted_class]))
+#             a = "분노 확률:" + str(predict_value[predicted_class]) + " 분노을 나타내는 문장입니다."
+#
+#         elif predicted_class == 4:
+#             print("(걱정 확률: {:.2f} 걱정을 나타내는 문장입니다.)".format(predict_value[predicted_class]))
+#             a = "걱정 확률:" + str(predict_value[predicted_class]) + " 걱정을 나타내는 문장입니다."
+#
+#         elif predicted_class == 5:
+#             print("(중립 확률: {:.2f} 중립을 나타내는 문장입니다.)".format(predict_value[predicted_class]))
+#             a = "중립 확률:" + str(predict_value[predicted_class]) + " 중립을 나타내는 문장입니다."
+#
+#         else:
+#             a = "잘못된 형식의 문장입니다."
+#
+#         return a
+#     a = lyrics_evaluation_predict("""Will it be a pavement or a sidewalk
+# When I finally lay my eyes on you?
+# Someone I've already loved
+# Or will you find your way out of the blue?
+# Will it be my flat or your apartment
+# When I finally realise I do?
+# Will we meet on Baker Street
+# Or find ourselves on Melrose Avenue?
+# I don't know who you are
+# But I'll save you a seat
+# Hang my coat on a chair next to me
+# I tried to reassure the waiter
+# Say you're down the street
+# He laughed at me
+# So here's to you
+# The most beautiful thing
+# that I have never seen
+# Someone on a screen asked me a question
+# Something about what love means to me
+# Maybe it's just circumstance
+# Or general compatibility
+# I don't know who you are
+# But I'll save you a seat
+# Hang my coat on a chair next to me
+# I tried to reassure the waiter
+# Say you're down the street
+# He laughed at me
+# So here's to you
+# The most beautiful thing
+# that I have never seen""")
 
     context = {"predict" : a}
     print(context)

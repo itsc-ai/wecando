@@ -1,0 +1,44 @@
+{% extends 'wecando/base.html' %}
+{% load static %}
+{% block main_area %}
+<script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>
+<script src="https://unpkg.com/gifler@0.1.0/gifler.min.js"></script>
+<!-- bootstrap -->
+<link href="{% static 'wecando/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+<!-- fontawesome -->
+<!--    <script src="https://kitfontawesome.com/539842d0c4.js" crossorigin="anonymous"></script>-->
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+
+
+<div class="container my-3 d-flex justify-content-center" style="height:700px;">
+    <form class="form align-self-center ms-5" method="post" enctype="multipart/form-data" style="width:300px;">
+        {% csrf_token %}
+        {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+        <input type="file" onchange="readURL(this);" name="img_file" value="{{ diary.img_file }}">
+        <br/>
+        <img id = "previmg" src="{{ diary.img_file.url }}"  width="150px" height="150px">
+
+        <button class="btn" type="submit">
+            <img src="{% static 'wecando/image/save.png' %}" width="70px">
+        </button>
+    </form>
+</div>
+
+<script>
+    function readURL(input) {
+	if (input.files && input.files[0]) {
+		var reader = new FileReader();
+		reader.onload = function(e) {
+			document.getElementById('previmg').src = e.target.result;
+		};
+		reader.readAsDataURL(input.files[0]);
+	} else {
+		document.getElementById('preview').src = "";
+	}
+}
+</script>
+
+{% endblock %}

@@ -99,14 +99,15 @@
                                 </button>
                             </form>
                         </div>
-                        <div class="col">
-                            <form action="{% provider_login_url 'naver' %}" method='post'>
-                                {% csrf_token %}
-                                <button class="btn" role="button"><img width="60px"
-                                                                       src="{% static 'wecando/image/naver_icon.png' %}">
-                                </button>
-                            </form>
-                        </div>
+<!--                        네이버 로그인 작동 불가-->
+<!--                        <div class="col">-->
+<!--                            <form action="{% provider_login_url 'naver' %}" method='post'>-->
+<!--                                {% csrf_token %}-->
+<!--                                <button class="btn" role="button"><img width="60px"-->
+<!--                                                                       src="{% static 'wecando/image/naver_icon.png' %}">-->
+<!--                                </button>-->
+<!--                            </form>-->
+<!--                        </div>-->
                         <div class="col">
                             <form action="{% provider_login_url 'kakao' %}" method='post'>
                                 {% csrf_token %}

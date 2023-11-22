@@ -7,6 +7,8 @@
     }
 
 </style>
+
+
 <div class="container">
 
     {% if diary_list %}
@@ -62,6 +64,11 @@
     아직 일기장이 없습니다.
 </div>
 {%endif%}
+<div style=" position: fixed; right: 90px; bottom: 200px;">
+    <a class="btn" href="../cover_create/">
+        <img width="80px" src="{% static 'wecando/image/8202936.png' %}">
+    </a>
+</div>
 <div style=" position: fixed; right: 80px; bottom: 80px;">
     <a class="btn" href="../diary_create/">
         <img width="100px" src="{% static 'wecando/image/diary_add.png' %}">
