@@ -41,7 +41,7 @@
     }
   .today {
     position: absolute;
-    top: 10%;
+    top: 15%;
     right: 20%;
   }
 
@@ -54,61 +54,67 @@
         style="float:left; color:#897168; font-size:20px;">
     <- BACK
 </button>
-<figure class="mt-3">
-    <img src="{% static 'wecando/image/diary_write3.png' %}"
-         style="width: 850px; height:650px;display: block; margin: 0 auto;" class="backgroundimg">
-    <div id="current_date" class="today">
-        {{ writen.created_at }}
-    </div>
+
+<div class="row h-100 w-100 align-items-center">
+    <div class="col">
+        <figure class="mt-3">
+            <img src="{% static 'wecando/image/diary_write3.png' %}"
+                 style="width: 850px; height:750px;display: block; margin: 0 auto;" class="backgroundimg">
+            <div id="current_date" class="today">
+                {{ writen.created_at }}
+            </div>
 
 
-    <div id="center" class="">
-        <form class="form-inline center" method="post" action="{% url 'diary_update' writen.pk %}"
-              enctype="multipart/form-data">
-            {% csrf_token %}
-            <fieldset style="width:300px; border:hidden;">
-                <legend align="center" style="background-color:transparent"></legend>
-                <div class="form-group mb-3" style="border:0 solid black display: block;">
-                    <label class="form-label" style="width: 500px;" for="writen_title">
-                        <input type="text" style="background-color:transparent; border:none; width:400px;"
-                               id="writen_title" name="writen_title" value="{{ writen.writen_title }}">
-                    </label>
+            <div id="center" class="">
+                <form class="form-inline center" method="post" action="{% url 'diary_update' writen.pk %}"
+                      enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+                    <fieldset style="width:300px; border:hidden;">
+                        <legend align="center" style="background-color:transparent"></legend>
+                        <div class="form-group mb-3" style="border:0 solid black display: block;">
+                            <label class="form-label" style="width: 500px;" for="writen_title">
+                                <input type="text" style="background-color:transparent; border:none; width:400px;"
+                                       id="writen_title" name="writen_title" value="{{ writen.writen_title }}">
+                            </label>
 
-                    <label class="form-label" for="writen_content">
-                    </label>
-                    <textarea class="content"
-                              style="background-color:transparent; resize:none; width:750px; height:400px; items-align:center; border:none;"
-                              id="writen_content" name="writen_content">{{ writen.writen_content }}</textarea>
-                </div>
-                <div class="row">
-                    <div class="col-4">
-                        <div class="imgup" style="width:90px">
-                            <div class="button" style="width:80px">
-                                <label for="img_file" style="width:70px">
-                                    <img src="{% static 'wecando/image/image.png' %}" width="60px">
-                                    <input type="file" id="img_file" name="img_file" accept="image/*"
-                                           onchange="readURL(this);" style="visibility: hidden; width:50px;"
-                                           value="{{ writen.img_file }}">
-                                </label>
-                            </div>
-
+                            <label class="form-label" for="writen_content">
+                            </label>
+                            <textarea class="content"
+                                      style="background-color:transparent; resize:none; width:750px; height:400px; items-align:center; border:none;"
+                                      id="writen_content" name="writen_content">{{ writen.writen_content }}</textarea>
                         </div>
-                    </div>
-                    <div class="col-8">
-                        <img id="preview" width="100px" height = "100px"/>
-                    </div>
-                </div>
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="imgup" style="width:90px">
+                                    <div class="button" style="width:80px">
+                                        <label for="img_file" style="width:70px">
+                                            <img src="{% static 'wecando/image/image.png' %}" width="60px">
+                                            <input type="file" id="img_file" name="img_file" accept="image/*"
+                                                   onchange="readURL(this);" style="visibility: hidden; width:50px;"
+                                                   value="{{ writen.img_file }}">
+                                        </label>
+                                    </div>
 
-                <div class="figcaption2">
-                    <button class="btn" type="submit">
-                        <img src="{% static 'wecando/image/save.png' %}" width="70px">
-                    </button>
-                </div>
-            </fieldset>
-        </form>
-        {{ form.media }}
+                                </div>
+                            </div>
+                            <div class="col-8">
+                                <img id="preview" width="100px" height="100px" src="{{ writen.img_file.url }}"/>
+                            </div>
+                        </div>
+
+                        <div class="figcaption2">
+                            <button class="btn" type="submit">
+                                <img src="{% static 'wecando/image/save.png' %}" width="70px">
+                            </button>
+                        </div>
+                    </fieldset>
+                </form>
+                {{ form.media }}
+            </div>
+        </figure>
     </div>
-</figure>
+</div>
 <script>
     function readURL(input) {
 	if (input.files && input.files[0]) {

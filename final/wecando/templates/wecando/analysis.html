@@ -1,0 +1,8 @@
+{% extends "wecando/base.html" %}
+{% load static %}
+{% block main_area %}
+<script type='module' src='https://prod-apnortheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script>
+<tableau-viz id='tableau-viz' src='https://prod-apnortheast-a.online.tableau.com/t/dy0903/views/test/1/8e28475b-1ab7-4028-83fe-85545edaa76c/e8463b59-4fa5-412a-8d9f-6506be138485' width='1920' height='923' hide-tabs toolbar='no' >
+
+</tableau-viz>
+{% endblock %}

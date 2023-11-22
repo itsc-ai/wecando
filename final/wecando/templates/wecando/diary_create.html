@@ -1,31 +1,20 @@
 {% extends 'wecando/base.html' %}
 {% load static %}
 {% block main_area %}
-    <div class="container my-3">
-        <form class="form-inline center" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-        <div class="row h-100 w-100 align-items-center">
-            <div class="col">
+<div class="container my-3 d-flex justify-content-center" style="height:700px;">
+    <form class="form align-self-center ms-5" method="post" enctype="multipart/form-data" style="width:300px;">
+        {% csrf_token %}
+        {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
+        <input type="file" onchange="readURL(this);" name="img_file">
+        <br/>
+        <img id="preview" width="150px" height="150px"/>
 
-                    <input type="file" onchange="readURL(this);" name="img_file" >
+        <button class="btn" type="submit">
+            <img src="{% static 'wecando/image/save.png' %}" width="70px">
+        </button>
+    </form>
+</div>
 
-                    <br />
-
-                    <img id="preview" width="1250px" height = "500px"/>
-
-
-
-            </div>
-        </div>
-        <div class="row h-100 w-100 ">
-            <div class="col">
-                <button class="btn float-end" type="submit">
-                    <img src="{% static 'wecando/image/save.png' %}" width="70px">
-                </button>
-            </div>
-        </div>
-            </form>
-    </div>
 
 <script>
     function readURL(input) {

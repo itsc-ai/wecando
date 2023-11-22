@@ -1,0 +1,277 @@
+{% extends "wecando/base.html" %}
+{% load static %}
+{% block main_area %}
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konva Image Example</title>
+    <script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #FFF;
+        }
+    </style>
+
+    <div id="container"></div>
+        <button id="save" style="visibility: hidden; width:0px; height:0px;">Save as image</button>
+    <div style="position: fixed; right: 5px; top: 80px;">
+        <input type="file" id="imageInput" accept="image/*">
+    </div>
+    <div style=" position: fixed; right: 80px; bottom: 80px;">
+        <button id="downloadSpecificArea" class="btn float-end">
+            <img src="{% static 'wecando/image/save.png' %}" width="70px">
+        </button>
+    </div>
+
+    <script>
+    var width = window.innerWidth;
+    var height = window.innerHeight;
+
+    var stage = new Konva.Stage({
+        container: 'container',
+        width: 1350,
+        height: 600,
+    });
+
+    var layer = new Konva.Layer();
+    stage.add(layer);
+
+    // 커버 이미지
+    document.getElementById('imageInput').addEventListener('change', function (e) {
+    var file = e.target.files[0];
+    if (file) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+
+            // 새로운 커버 이미지 생성
+            var coverObj = new Image();
+            coverObj.onload = function () {
+                coverImage = new Konva.Image({
+                    x: stage.width() - 550,
+                    y: stage.height() / 2 - 275,
+                    image: coverObj,
+                    width: 400,
+                    height: 550,
+                    draggable: false,
+                });
+                layer.add(coverImage);
+                layer.draw();
+            };
+            coverObj.src = event.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+    // 사이즈 조절 생성
+    var tr = new Konva.Transformer({
+        visible: false, // 초기에는 보이지 않도록 설정
+    });
+    layer.add(tr);
+
+    // 이미지 생성 함수
+    function createImage(imageObj, x, y) {
+        var image = new Konva.Image({
+            x: x,
+            y: y,
+            image: imageObj,
+            width: 60,
+            height: 60,
+            draggable: true,
+        });
+
+        // 이미지 클릭 시 조절바 활성화
+        image.on('click', function (e) {
+            tr.nodes([image]);
+            tr.visible(true);
+            layer.draw();
+            // 이미지 클릭 이벤트가 상위로 전파되지 않도록 중지
+            e.cancelBubble = true;
+        });
+
+        layer.add(image);
+        layer.batchDraw();
+    }
+
+    // 이미지 로딩 및 생성
+    function loadImageAndCreate(x, y, imagePath) {
+        var imageObj = new Image();
+        imageObj.onload = function () {
+            createImage(imageObj, x, y);
+        };
+        imageObj.src = imagePath;
+    }
+
+    // 조절바의 이동에 따라 이미지 크기 조절
+    tr.on('transform', function () {
+        var node = tr.nodes()[0];
+        var scaleX = node.scaleX();
+        var scaleY = node.scaleY();
+
+        // 사이즈 제한 (원하는 크기로 수정 가능)
+        if (scaleX < 0.5) scaleX = 0.5;
+        if (scaleY < 0.5) scaleY = 0.5;
+
+        node.width(node.width() * scaleX);
+        node.height(node.height() * scaleY);
+        node.scaleX(1);
+        node.scaleY(1);
+        layer.batchDraw();
+    });
+
+    // 스테이지 클릭 시 조절바 숨기기
+    stage.on('click', function (e) {
+        // 이미지가 클릭된 경우 이벤트 중단
+        if (e.target instanceof Konva.Image) return;
+
+        tr.nodes([]); // 선택된 노드 해제
+        tr.visible(false); // 조절바 숨기기
+        layer.draw();
+    });
+
+    // 이미지들 로딩 및 생성
+    loadImageAndCreate(stage.width() - 1340, stage.height() - 580, '{% static 'wecando/image/jjang1.png' %}');
+    loadImageAndCreate(stage.width() - 1270, stage.height() - 580, '{% static 'wecando/image/jjang2.png' %}');
+    loadImageAndCreate(stage.width() - 1200, stage.height() - 580, '{% static 'wecando/image/jjang4.png' %}');
+    loadImageAndCreate(stage.width() - 1130, stage.height() - 580, '{% static 'wecando/image/jjang5.png' %}');
+    loadImageAndCreate(stage.width() - 1060, stage.height() - 580, '{% static 'wecando/image/jjang6.png' %}');
+    loadImageAndCreate(stage.width() - 990, stage.height() - 580, '{% static 'wecando/image/pooh1.png' %}');
+    loadImageAndCreate(stage.width() - 920, stage.height() - 580, '{% static 'wecando/image/sticker40.png' %}');
+
+    loadImageAndCreate(stage.width() - 1340, stage.height() - 500, '{% static 'wecando/image/pooh2.png' %}');
+    loadImageAndCreate(stage.width() - 1270, stage.height() - 500, '{% static 'wecando/image/stitch2.png' %}');
+    loadImageAndCreate(stage.width() - 1200, stage.height() - 500, '{% static 'wecando/image/stitch3.png' %}');
+    loadImageAndCreate(stage.width() - 1130, stage.height() - 500, '{% static 'wecando/image/stitch4.png' %}');
+    loadImageAndCreate(stage.width() - 1060, stage.height() - 500, '{% static 'wecando/image/sticker2.png' %}');
+    loadImageAndCreate(stage.width() - 990, stage.height() - 500, '{% static 'wecando/image/sticker3.png' %}');
+    loadImageAndCreate(stage.width() - 920, stage.height() - 500, '{% static 'wecando/image/sticker41.png' %}');
+
+    loadImageAndCreate(stage.width() - 1340, stage.height() - 420, '{% static 'wecando/image/sticker4.png' %}');
+    loadImageAndCreate(stage.width() - 1270, stage.height() - 420, '{% static 'wecando/image/sticker5.png' %}');
+    loadImageAndCreate(stage.width() - 1200, stage.height() - 420, '{% static 'wecando/image/sticker6.png' %}');
+    loadImageAndCreate(stage.width() - 1130, stage.height() - 420, '{% static 'wecando/image/sticker7.png' %}');
+    loadImageAndCreate(stage.width() - 1060, stage.height() - 420, '{% static 'wecando/image/sticker8.png' %}');
+    loadImageAndCreate(stage.width() - 990, stage.height() - 420, '{% static 'wecando/image/sticker9.png' %}');
+
+    loadImageAndCreate(stage.width() - 1340, stage.height() - 340, '{% static 'wecando/image/sticker10.png' %}');
+    loadImageAndCreate(stage.width() - 1270, stage.height() - 340, '{% static 'wecando/image/sticker11.png' %}');
+    loadImageAndCreate(stage.width() - 1200, stage.height() - 340, '{% static 'wecando/image/sticker12.png' %}');
+    loadImageAndCreate(stage.width() - 1130, stage.height() - 340, '{% static 'wecando/image/sticker13.png' %}');
+    loadImageAndCreate(stage.width() - 1060, stage.height() - 340, '{% static 'wecando/image/sticker15.png' %}');
+    loadImageAndCreate(stage.width() - 990, stage.height() - 340, '{% static 'wecando/image/sticker16.png' %}');
+
+    loadImageAndCreate(stage.width() - 1340, stage.height() - 260, '{% static 'wecando/image/sticker17.png' %}');
+    loadImageAndCreate(stage.width() - 1270, stage.height() - 260, '{% static 'wecando/image/sticker18.png' %}');
+    loadImageAndCreate(stage.width() - 1200, stage.height() - 260, '{% static 'wecando/image/sticker20.png' %}');
+    loadImageAndCreate(stage.width() - 1130, stage.height() - 260, '{% static 'wecando/image/sticker21.png' %}');
+    loadImageAndCreate(stage.width() - 1060, stage.height() - 260, '{% static 'wecando/image/sticker23.png' %}');
+    loadImageAndCreate(stage.width() - 990, stage.height() - 260, '{% static 'wecando/image/sticker24.png' %}');
+
+    loadImageAndCreate(stage.width() - 1340, stage.height() - 180, '{% static 'wecando/image/sticker25.png' %}');
+    loadImageAndCreate(stage.width() - 1270, stage.height() - 180, '{% static 'wecando/image/sticker28.png' %}');
+    loadImageAndCreate(stage.width() - 1200, stage.height() - 180, '{% static 'wecando/image/sticker29.png' %}');
+    loadImageAndCreate(stage.width() - 1130, stage.height() - 180, '{% static 'wecando/image/sticker30.png' %}');
+    loadImageAndCreate(stage.width() - 1060, stage.height() - 180, '{% static 'wecando/image/sticker31.png' %}');
+    loadImageAndCreate(stage.width() - 990, stage.height() - 180, '{% static 'wecando/image/sticker33.png' %}');
+
+    loadImageAndCreate(stage.width() - 1340, stage.height() - 100, '{% static 'wecando/image/sticker34.png' %}');
+    loadImageAndCreate(stage.width() - 1270, stage.height() - 100, '{% static 'wecando/image/sticker35.png' %}');
+    loadImageAndCreate(stage.width() - 1200, stage.height() - 100, '{% static 'wecando/image/sticker36.png' %}');
+    loadImageAndCreate(stage.width() - 1130, stage.height() - 100, '{% static 'wecando/image/sticker37.png' %}');
+    loadImageAndCreate(stage.width() - 1060, stage.height() - 100, '{% static 'wecando/image/sticker38.png' %}');
+    loadImageAndCreate(stage.width() - 990, stage.height() - 100, '{% static 'wecando/image/sticker39.png' %}');
+
+
+     // 드래그 앤 드롭 -> 커버 이미지 위로 올라가게
+    layer.on('dragstart', function (e) {
+        e.target.moveToTop();
+        layer.draw();
+    });
+
+    layer.on('dragend', function (e) {
+        e.target.moveToTop();
+        layer.draw();
+    });
+
+
+    // 이미지 저장(다운로드)
+    function downloadURI(uri, name) {
+        var link = document.createElement('a');
+        link.download = name;
+        link.href = uri;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        delete link;
+    }
+
+    // 전체 화면 저장
+    // 제거 -> 특정 영역 저장이 안됨
+    document.getElementById('save').addEventListener(
+        'click',
+        function () {
+            var dataURL = stage.toDataURL({ pixelRatio: 1 });
+            downloadURI(dataURL, 'stage.png');
+        },
+        false
+    );
+
+    // 특정 영역만 저장
+    function downloadSpecificArea() {
+        // 특정 영역의 이미지 데이터 URL 생성
+        var dataURL = saveLayer.toDataURL({
+            pixelRatio: 1
+        });
+
+        // 다운로드 함수
+        downloadURI(dataURL, 'cover_and_images.png');
+    }
+
+    // 다운로드 버튼에 이벤트 리스너 등록
+    document.getElementById('save').addEventListener(
+        'click',
+        function () {
+            var dataURL = stage.toDataURL({ pixelRatio: 1 });
+            downloadURI(dataURL, 'stage.png');
+        },
+        false
+    );
+
+    // 특정 영역만 저장되게 하기위해 html2canvas 사용
+    document.getElementById('save').addEventListener('click', function () {
+            html2canvas(document.getElementById('container')).then(function (canvas) {
+                var dataURL = canvas.toDataURL('image/png');
+                downloadURI(dataURL, 'stage.png');
+            });
+        });
+
+
+    // 특정 영역 다운로드 버튼에 이벤트 리스너 등록
+    document.getElementById('downloadSpecificArea').addEventListener('click', function () {
+        // 특정 영역의 이미지 데이터 URL 생성
+        var dataURL = stage.toDataURL({
+            x: stage.width() - 550,
+            y: stage.height() / 2 - 275,
+            width: 400,
+            height: 550,
+            pixelRatio: 1
+        });
+
+        // 다운로드 함수 호출
+        downloadURI(dataURL, 'cover.png');
+
+        // 페이지 이동
+        additionalEvent();
+    });
+
+    // 페이지 이동
+    function additionalEvent() {
+        var link = 'http://127.0.0.1:8000/diary';
+        location.href=link;
+        location.replace(link);
+        alert('추가 페이지로 이동합니다.');
+    }
+
+    </script>
+{% endblock %}

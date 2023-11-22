@@ -2,12 +2,23 @@
 {% load static %}
 {% block main_area %}
 
-<a type="button" href="/calendar/{{write.diary_num.diary_num}}/" style="float:left; color:#897168; font-size:25px; text-decoration: none;" >
+<style>
+    .back{
+        min-height:800px;
+    }
+    .content{
+        min-height:400px;
+    }
+</style>
+
+<a type="button" href="/calendar/{{write.diary_num.diary_num}}/"
+   style="float:left; color:#897168; font-size:25px; text-decoration: none;">
     calendar
 </a>
 
-<div class="container my-3" style="background-color:#FFFAF4; width: 850px; height: 800px;">
-
+    <div class="row h-100 w-100 align-items-center">
+    <div class="col">
+        <div class="container my-3    " style="background-color:#FFFAF4; width: 850px; back">
     <div class="row">
         <div class="col">
             <figure>
@@ -29,8 +40,23 @@
                 <div class="row my-2">
                     <div>
                         <h3 style=" text-align:center;">{{ write.writen_title }}</h3>
-                        <p style=" text-align:right; font-size:20px">{{ write.created_at }}</p>
-                        <p style="text-align:center;  height:400px; font-size:20px">{{ write.writen_content }}</p>
+                        <p style=" text-align:right; font-size:20px">
+                            {{ write.created_at }}
+                            {% if write.type_num.type_num == 0 %}
+                            😄
+                            {% elif write.type_num.type_num == 1%}
+                            😍
+                            {% elif write.type_num.type_num == 2%}
+                            😢
+                            {% elif write.type_num.type_num == 3%}
+                            😡
+                            {% elif write.type_num.type_num == 4%}
+                            😟
+                            {% elif write.type_num.type_num == 5%}
+                            😐
+                            {%endif%}
+                        </p>
+                        <p style="text-align:center;   font-size:20px" class="content">{{ write.writen_content | linebreaksbr }}</p>
 
 
                     </div>
@@ -39,6 +65,7 @@
                 <div class="row ms-2">
 
                     <div class="col">
+
                         <div class="row mb-4">
                             <audio autoplay controls loop style="visibility: hidden; width:0px; height:0px;">
                                 <source src="/static/wecando/music/{{write.music_num.music_file}}" type="audio/mp3">
@@ -49,7 +76,6 @@
                         <div class="row">
                             <b><span>💬 - {{write.wise_num.wise_author}}</span></b>
                             <span> "{{write.wise_num.wise_content}}"</span>
-
 
 
                         </div>
@@ -93,5 +119,10 @@
     </div>
 
 </div>
+    </div>
+</div>
+
+
+
 {% endblock %}
 

@@ -1,16 +1,16 @@
 {% if form.errors %}<!-- 만약에 폼 검증 중 오류가 발생하면 아래의 코드 실행. -->
     {% for field in form %} <!-- 각 필드에 대한 오류를 순회 하면서 출력 -->
         {% for error in field.errors %}  <!-- 필드 오류를 출력. -->
-            <div class="alert alert-danger">
-                <strong>{{ field.label }}</strong>
-                {{ field.errors }}
-            </div>
+
+            <script type="text/javascript">
+                alert('{{field.label}}{{field.errors}}');
+            </script>
         {% endfor %}
     {% endfor %}
 
     {% for error in form.non_field_errors %}   <!-- 넌필드 오류를 출력. -->
-        <div class="alert alert-danger">
-            <strong>{{ error }}</strong>
-        </div>
+        <script type="text/javascript">
+            alert('{{error}}');
+        </script>
     {% endfor %}
 {% endif %}

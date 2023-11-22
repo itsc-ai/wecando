@@ -20,5 +20,7 @@ urlpatterns = [
     path('password_reset/', views.password_reset_request, name="password_reset"),
     path("diary_check/<int:pk>/", views.DiaryCheck.as_view(), name="diary_check"),
     path("cover_update/<int:pk>/", views.CoverUpdate.as_view(), name="cover_update"),
+    path("cover_create/", views.CoverCreate.as_view(), name="cover_create"),
+    path("analysis/", views.Analysis.as_view(), name="analysis"),
     path("test/", views.test, name='test'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
