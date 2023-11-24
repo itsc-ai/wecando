@@ -396,12 +396,15 @@ def password_reset_request(request):
             if associated_users.exists():
                 for user in associated_users:
                     current_site = get_current_site(request)
+                    print(current_site.domain)
+                    print(urlsafe_base64_encode(force_bytes(user.pk)))
+                    print(default_token_generator.make_token(user))
                     subject = '비밀번호 재설정'
                     email_template_name = "wecando/password_reset_email.html"
                     c = {
                         "email": user.email,
                         # local: '127.0.0.1:8000', prod: 'givwang.herokuapp.com'
-                        'domain': current_site.domain,
+                        'domain': "127.0.0.1:8000",
                         'site_name': '11:57',
                         # MTE4
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),

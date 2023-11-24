@@ -82,7 +82,7 @@
                             </label>
                             <textarea class="content"
                                       style="background-color:transparent; resize:none; width:750px; height:400px; items-align:center; border:none;"
-                                      id="writen_content" name="writen_content">{{ writen.writen_content }}</textarea>
+                                      id="writen_content" name="writen_content" maxlength="5000">{{ writen.writen_content }}</textarea>
                         </div>
                         <div class="row">
                             <div class="col-4">
@@ -99,7 +99,11 @@
                                 </div>
                             </div>
                             <div class="col-8">
+                                {% if writen.img_file %}
                                 <img id="preview" width="100px" height="100px" src="{{ writen.img_file.url }}"/>
+                                {% else %}
+                                <img id="preview" width="100px" height="100px" />
+                                {% endif %}
                             </div>
                         </div>
 

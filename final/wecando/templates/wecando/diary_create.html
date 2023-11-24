@@ -1,13 +1,13 @@
 {% extends 'wecando/base.html' %}
 {% load static %}
 {% block main_area %}
-<div class="container my-3 d-flex justify-content-center" style="height:700px;">
+<div class="container  d-flex justify-content-center" style="height:850px;">
     <form class="form align-self-center ms-5" method="post" enctype="multipart/form-data" style="width:300px;">
         {% csrf_token %}
         {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
         <input type="file" onchange="readURL(this);" name="img_file">
         <br/>
-        <img id="preview" width="150px" height="150px"/>
+        <img id="preview" width="400px" height="550px"/>
 
         <button class="btn" type="submit">
             <img src="{% static 'wecando/image/save.png' %}" width="70px">

@@ -1,8 +1,50 @@
-{% extends "wecando/base.html" %}
+<!DOCTYPE html>
 {% load static %}
-{% block main_area %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- bootstrap -->
+    <link href="{% static 'wecando/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <!-- fontawesome -->
+    <script src="https://kitfontawesome.com/539842d0c4.js" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
+
+    <link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
+
+    <style>
+        body{
+            background-color:#fff;
+        }
+    </style>
+    </head>
+<body class="d-flex flex-column min-vh-100">
+{% include "wecando/navbar.html" %}<!-- navbar를 불러옴 -->
+
 <script type='module' src='https://prod-apnortheast-a.online.tableau.com/javascripts/api/tableau.embedding.3.latest.min.js'></script>
 <tableau-viz id='tableau-viz' src='https://prod-apnortheast-a.online.tableau.com/t/dy0903/views/test/1/8e28475b-1ab7-4028-83fe-85545edaa76c/e8463b59-4fa5-412a-8d9f-6506be138485' width='1920' height='923' hide-tabs toolbar='no' >
 
 </tableau-viz>
-{% endblock %}
+
+<!-- 부트스트랩 사용을 위한 스크립트 -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
+
+{% include "wecando/footer.html" %}<!-- navbar를 불러옴 -->
+<!-- 부트스트랩 사용을 위한 스크립트 -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-Rx+T1VzGupg4BHQYs2gCW9It+akI2MM/mndMCy36UVfodzcJcF0GGLxZIzObiEfa"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>

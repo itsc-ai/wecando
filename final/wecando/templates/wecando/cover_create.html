@@ -2,16 +2,6 @@
 {% load static %}
 {% block main_area %}
 
-<!-- bootstrap -->
-<link href="{% static 'wecando/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
-
-<!-- fontawesome -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
-<link href="{% static 'css/style.css' %}" rel="stylesheet" type="text/css">
-
-<head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Konva Image Example</title>
     <script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>
@@ -23,10 +13,8 @@
             background-color: #FFF;
         }
     </style>
-</head>
 
-<body>
-    <div id="container"></div>
+    <div id="container" style="width:1350; height:570;"></div>
 
         <button id="save" style="visibility: hidden; width:0px; height:0px;">Save as image</button>
     <div style="position: fixed; right: 140px; top: 80px;">
@@ -64,14 +52,35 @@
     var width = window.innerWidth;
     var height = window.innerHeight;
 
-    var stage = new Konva.Stage({
+    if (height >=900){
+        var stage = new Konva.Stage({
         container: 'container',
         width: 1350,
-        height: 570,
+<!--        height: (height - 210),-->
+        height:680,
     });
+    }else{
+        var stage = new Konva.Stage({
+        container: 'container',
+        width: 1350,
+<!--        height: (height - 210),-->
+        height:570,
+    });
+    }
+
+<!--    var stage = new Konva.Stage({-->
+<!--        container: 'container',-->
+<!--        width: 1350,-->
+<!--&lt;!&ndash;        height: (height - 210),&ndash;&gt;-->
+<!--        height:570,-->
+<!--    });-->
+
+
+    alert(height)
 
     var layer = new Konva.Layer();
     stage.add(layer);
+
 
     // 커버 이미지
     document.getElementById('imageInput').addEventListener('change', function (e) {
@@ -306,9 +315,9 @@
         var link = 'http://127.0.0.1:8000/diary';
         location.href=link;
         location.replace(link);
-        alert('추가 페이지로 이동합니다.');
+        alert('download 폴더에 다운로드 되었습니다.');
     }
 
     </script>
-</body>
+
 {% endblock %}

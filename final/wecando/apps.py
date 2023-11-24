@@ -11,7 +11,7 @@ bert_model = TFBertModel.from_pretrained('bert-base-multilingual-cased')
 MAX_LEN = 50
 
 # PyTorch 모델 로드
-model_path = 'C:/Users/ITSC/Desktop/Project/WECANDO/final/wecando/static/wecando/model/bert_gold_model3.pth'
+model_path = 'C:/Users/ITSC/Desktop/Project/WECANDO/final/wecando/static/wecando/model/bert_gold_model4.pth'
 model_eng = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=6)
 # 모델을 CPU에서 불러오기
 model_eng.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))

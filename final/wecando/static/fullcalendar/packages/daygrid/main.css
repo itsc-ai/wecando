@@ -26,8 +26,9 @@
 }
 
 /* week and day number styling */
+/* 이전달 날짜 표시부분 */
 .fc-day-top.fc-other-month {
-  opacity: 0.3;
+  opacity: 0.1;
 }
 
 .fc-dayGrid-view .fc-week-number,
