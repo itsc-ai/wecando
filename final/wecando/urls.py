@@ -22,5 +22,4 @@ urlpatterns = [
     path("cover_update/<int:pk>/", views.CoverUpdate.as_view(), name="cover_update"),
     path("cover_create/", views.CoverCreate.as_view(), name="cover_create"),
     path("analysis/", views.Analysis.as_view(), name="analysis"),
-    path("test/", views.test, name='test'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -290,10 +290,11 @@ temporary rendered events).
   cursor: not-allowed;
 }
 
+/* 제목 글자색 변경 */
 .fc-event .fc-content {
   position: relative;
   z-index: 2;
-  color: #fff;
+  color: #000000;
   padding: 4px;
 }
 

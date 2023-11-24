@@ -24,7 +24,7 @@
     <!-- Style -->
     <link rel="stylesheet" href="/static/css/style.css">
 
-    <title>Calendar #10</title>
+    <title>11시 57분</title>
 
     <style>
      .fc-other-month{
@@ -85,14 +85,26 @@
         {% for i in writen %}
           {
               {% if today == i.created_at|date:'Y-m-d'%}
-                title:"{{i.writen_title}}",
+                title:"{{i.writen_title}}{% if i.type_num.type_num == 0 %} 😄",
+                {% elif i.type_num.type_num == 1%} 😍",
+                {% elif i.type_num.type_num == 2%} 😢",
+                {% elif i.type_num.type_num == 3%} 😡",
+                {% elif i.type_num.type_num == 4%} 😟",
+                {% elif i.type_num.type_num == 5%} 😐",
+                {%endif%}
                 url:"/diary_detail/{{i.writen_num}}/",
                 start:"{{i.created_at|date:'Y-m-d'}}",
                 backgroundColor: "#EF5350",
                 borderColor : "#EF5350",
 
               {% else %}
-                title:"{{i.writen_title}}",
+                title:"{{i.writen_title}}{% if i.type_num.type_num == 0 %} 😄",
+                {% elif i.type_num.type_num == 1%} 😍",
+                {% elif i.type_num.type_num == 2%} 😢",
+                {% elif i.type_num.type_num == 3%} 😡",
+                {% elif i.type_num.type_num == 4%} 😟",
+                {% elif i.type_num.type_num == 5%} 😐",
+                {%endif%}
                 url:"/diary_detail/{{i.writen_num}}/",
                 start:"{{i.created_at|date:'Y-m-d'}}"
               {% endif %}
