@@ -3,7 +3,8 @@
         {% for error in field.errors %}  <!-- 필드 오류를 출력. -->
 
             <script type="text/javascript">
-                alert('{{field.label}}{{field.errors}}');
+                alert('{{field.label}} - {{error}}');
+
             </script>
         {% endfor %}
     {% endfor %}

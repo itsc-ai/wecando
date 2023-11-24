@@ -25,6 +25,13 @@
     <link rel="stylesheet" href="/static/css/style.css">
 
     <title>Calendar #10</title>
+
+    <style>
+     .fc-other-month{
+    opacity: 0.1;
+    background-color : gray;
+}
+    </style>
   </head>
   <body>
 
@@ -77,16 +84,28 @@
       events: [
         {% for i in writen %}
           {
-            title:"{{i.writen_title}}",
-            url:"/diary_detail/{{i.writen_num}}/",
-            start:"{{i.created_at|date:'Y-m-d'}}"
+              {% if today == i.created_at|date:'Y-m-d'%}
+                title:"{{i.writen_title}}",
+                url:"/diary_detail/{{i.writen_num}}/",
+                start:"{{i.created_at|date:'Y-m-d'}}",
+                backgroundColor: "#EF5350",
+                borderColor : "#EF5350",
+
+              {% else %}
+                title:"{{i.writen_title}}",
+                url:"/diary_detail/{{i.writen_num}}/",
+                start:"{{i.created_at|date:'Y-m-d'}}"
+              {% endif %}
+
           },
         {%endfor%}
         {% if today_check == 0 %}
           {
             title:"일기 작성하기",
             url:"/diary_write/{{diary_num}}/",
-            start:"{{today}}"
+            start:"{{today}}",
+            backgroundColor: "#EF5350",
+            borderColor : "#EF5350"
           },
          {%endif%}
       ]
@@ -96,8 +115,6 @@
   });
 
     </script>
-
-
 
     <script src="/static/js/main.js"></script>
 

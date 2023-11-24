@@ -261,12 +261,12 @@ temporary rendered events).
   font-size: 0.85em;
   line-height: 1.4;
   border-radius: 3px;
-  border: 1px solid #f67280;
+  border: 1px solid #FFCDD2;
 }
 
 .fc-event,
 .fc-event-dot {
-  background-color: #f67280;
+  background-color: #FFCDD2;
   /* default BACKGROUND color */
 }
 
@@ -466,6 +466,10 @@ be a descendant of the grid when it is being dragged.
 tr:first-child > td > .fc-day-grid-event {
   margin-top: 2px;
   /* a little bit more space before the first event */
+}
+
+.fc-mirror-skeleton > .fc-other-month{
+    opacity:0.5;
 }
 
 .fc-mirror-skeleton tr:first-child > td > .fc-day-grid-event {
