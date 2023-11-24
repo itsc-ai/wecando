@@ -86,12 +86,12 @@
                         </div>
                         <div class="row">
                             <div class="col-4">
-                                <div class="imgup" style="width:90px">
+                                <div class="imgup" style="width:90px; margin-top: 100px;">
                                     <div class="button" style="width:80px">
                                         <label for="img_file" style="width:70px">
                                             <img src="{% static 'wecando/image/image.png' %}" width="60px">
                                             <input type="file" id="img_file" name="img_file" accept="image/*"
-                                                   onchange="readURL(this);" style="visibility: hidden; width:50px;"
+                                                   onchange="readURL(this);" style="visibility: hidden; width:5%;"
                                                    value="{{ writen.img_file }}">
                                         </label>
                                     </div>
@@ -99,11 +99,10 @@
                                 </div>
                             </div>
                             <div class="col-8">
-                                <img id="preview" width="100px" height="100px" src="{{ writen.img_file.url }}"/>
+                                <img id="preview" width="180px" height="230px" src="{{ writen.img_file.url }}"/>
                             </div>
                         </div>
-
-                        <div class="figcaption2">
+                        <div style="position: fixed; bottom: 0%; right:-195%;">
                             <button class="btn" type="submit">
                                 <img src="{% static 'wecando/image/save.png' %}" width="70px">
                             </button>

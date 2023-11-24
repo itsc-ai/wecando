@@ -13,7 +13,6 @@
 
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Konva Image Example</title>
     <script src="https://unpkg.com/konva@9.2.3/konva.min.js"></script>
     <style>
         body {
@@ -72,6 +71,7 @@
 
     var layer = new Konva.Layer();
     stage.add(layer);
+
 
     // 커버 이미지
     document.getElementById('imageInput').addEventListener('change', function (e) {
@@ -288,7 +288,7 @@
         // 특정 영역의 이미지 데이터 URL 생성
         var dataURL = stage.toDataURL({
             x: stage.width() - 590,
-            y: stage.height() / 2 - 275,
+            y: stage.height() / 2 - 265,
             width: 400,
             height: 550,
             pixelRatio: 1

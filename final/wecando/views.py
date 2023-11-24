@@ -400,7 +400,6 @@ def password_reset_request(request):
                     email_template_name = "wecando/password_reset_email.html"
                     c = {
                         "email": user.email,
-                        # local: '127.0.0.1:8000', prod: 'givwang.herokuapp.com'
                         'domain': current_site.domain,
                         'site_name': '11:57',
                         # MTE4
@@ -408,8 +407,6 @@ def password_reset_request(request):
                         "user": user,
                         # Return a token that can be used once to do a password reset for the given user.
                         'token': default_token_generator.make_token(user),
-                        # local: http, prod: https
-                        # 'protocol': settings.PROTOCOL,
                     }
                     email = render_to_string(email_template_name, c)
                     try:

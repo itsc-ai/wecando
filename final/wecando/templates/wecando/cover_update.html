@@ -13,31 +13,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&display=swap" rel="stylesheet">
 
 
-<div class="container my-3 d-flex justify-content-center" style="height:700px;">
+<div class="container my-3 d-flex justify-content-center" style="height:590px;">
     <form class="form align-self-center ms-5" method="post" enctype="multipart/form-data" style="width:300px;">
         {% csrf_token %}
         {% include 'wecando/form_errors.html' %}<!-- 오류 메시지를 출력하는 템플릿 추가. -->
-        <input type="file" onchange="readURL(this);" name="img_file" value="{{ diary.img_file }}">
-        <br/>
-        <img id = "previmg" src="{{ diary.img_file.url }}"  width="150px" height="150px">
-
-        <button class="btn" type="submit">
-            <img src="{% static 'wecando/image/save.png' %}" width="70px">
-        </button>
+        <div style="position: absolute; left: 30%; top: 8%;">
+            <div class="row">
+                <div class="col-3">
+                    <label for="upload-input" id="upload-button">
+                      <img src="{% static 'wecando/image/image.png' %}" alt="Upload Icon" id="upload-icon" width="70px;">
+                    </label>
+                    <input type="file" onchange="readURL(this);" name="img_file" value="{{ diary.img_file }}" id="upload-input" style="visibility: hidden;">
+                </div>
+                <div class="col-9">
+                    <br>
+                    <div id="file-name">{{ diary.img_file }}</div>
+                </div>
+            </div>
+        </div>
+        <div style="position: absolute; left: 35%; top: 15%;">
+            <img id = "previmg" src="{{ diary.img_file.url }}"  width="400px" height="550px">
+        </div>
+        <div style="position: absolute; right: 32%; bottom: 8%;">
+            <button class="btn" type="submit">
+                <img src="{% static 'wecando/image/save.png' %}" width="70px">
+            </button>
+        </div>
     </form>
 </div>
 
 <script>
     function readURL(input) {
-	if (input.files && input.files[0]) {
-		var reader = new FileReader();
-		reader.onload = function(e) {
-			document.getElementById('previmg').src = e.target.result;
-		};
-		reader.readAsDataURL(input.files[0]);
-	} else {
-		document.getElementById('preview').src = "";
-	}
+    if (input.files && input.files[0]) {
+       var reader = new FileReader();
+       reader.onload = function(e) {
+          document.getElementById('previmg').src = e.target.result;
+       };
+       reader.readAsDataURL(input.files[0]);
+    } else {
+       document.getElementById('preview').src = "";
+    }
+    document.getElementById('file-name').innerHTML = input.files[0].name;
 }
 </script>
 

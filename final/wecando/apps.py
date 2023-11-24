@@ -3,7 +3,6 @@ import tensorflow as tf
 import numpy as np
 from transformers import TFBertModel, BertTokenizer, DistilBertTokenizer, DistilBertForSequenceClassification, BertForSequenceClassification
 import torch
-import nltk
 
 # BERT 토크나이저와 모델 로드
 tokenizer_ko = BertTokenizer.from_pretrained('bert-base-multilingual-cased')
@@ -11,7 +10,7 @@ bert_model = TFBertModel.from_pretrained('bert-base-multilingual-cased')
 MAX_LEN = 50
 
 # PyTorch 모델 로드
-model_path = 'C:/Users/ITSC/Desktop/Project/WECANDO/final/wecando/static/wecando/model/bert_gold_model3.pth'
+model_path = 'C:/Users/82107/OneDrive/바탕 화면/final_project/final/wecando/static/wecando/model/bert_gold_model3.pth'
 model_eng = BertForSequenceClassification.from_pretrained('bert-base-uncased', num_labels=6)
 # 모델을 CPU에서 불러오기
 model_eng.load_state_dict(torch.load(model_path, map_location=torch.device('cpu')))
@@ -67,7 +66,7 @@ class WecandoConfig(AppConfig):
           token_type_ids=test_input['token_type_ids'])
 
     # 가중치 로드
-    model_ko.load_weights('C:/Users/ITSC/Desktop/Project/WECANDO/final/wecando/static/wecando/model/1120_saved_model_10epoch.h5')
+    model_ko.load_weights('C:/Users/82107/OneDrive/바탕 화면/final_project/final/wecando/static/wecando/model/1120_saved_model_10epoch.h5')
 
     def sentence_convert_data(data):
         tokens, masks, segment = [], [], []
