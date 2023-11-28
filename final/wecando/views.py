@@ -438,41 +438,64 @@ def write_delete(request, pk):
 
 
 # 비밀번호 찾기
+# django.contrib.auth 앱에 속한 모듈, 내장 함수 사용
+# Django에서 제공하는 기본적인 비밀번호 재설정 폼 (폼을 통해 이메일 주소를 입력하여 비밀번호 재설정 이메일을 요청)
 def password_reset_request(request):
+    # POST 메서드로 요청이 들어왔을 때 실행
     if request.method == "POST":
+        # PasswordResetForm(django.contrib.auth.forms 내장 모듈에서 폼 제공)을 이용하여 POST된 데이터를 폼으로 변환
         password_reset_form = PasswordResetForm(request.POST)
+        # 폼이 유효한지 확인
         if password_reset_form.is_valid():
+            # 폼에서 이메일 데이터 추출
             data = password_reset_form.cleaned_data['email']
+            # get_user_model() : Django에서 제공하는 유저 모델을 가져오는 함수
+            # 입력된 이메일과 일치하는 사용자들을 가져옴
             associated_users = get_user_model().objects.filter(Q(email=data))
+            # 연결된 사용자가 존재하는 경우
             if associated_users.exists():
+                # 모든 연결된 사용자에 대해 처리
                 for user in associated_users:
+                    # django.contrib.sites 내장 모듈에서 함수 제공
+                    # get_current_site(request) : 현재 사이트 정보 가져오는 함수
+                    # 현재 사이트의 도메인 가져오기
                     current_site = get_current_site(request)
-                    print(current_site.domain)
-                    print(urlsafe_base64_encode(force_bytes(user.pk)))
-                    print(default_token_generator.make_token(user))
+                    # 이메일에 보내질 제목 및 템플릿(이메일 내용) 설정
                     subject = '비밀번호 재설정'
                     email_template_name = "wecando/password_reset_email.html"
                     c = {
                         "email": user.email,
                         'domain': "127.0.0.1:8000",
                         'site_name': '11:57',
-                        # MTE4
+                        # python 표준 라이브러리인 base64 : urlsafe_base64_encode 함수 제공
+                        # 유저의 primary key를 base64로 인코딩하여 토큰 생성
+                        # 사용자의 고유 식별자(user.pk)를 안전하게 url에 넣기 위한 함수
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
                         "user": user,
-                        # Return a token that can be used once to do a password reset for the given user.
+                        # Django에서 제공하는 유저에 대한 기본 토큰 생성(django.contrib.auth.tokens 내장 모듈에서 토큰 생성기 제공)
+                        # 비밀번호 재설정 토큰 생성
                         'token': default_token_generator.make_token(user),
                     }
+                    # 이메일 내용 렌더링
+                    # 템플릿 렌더링 -> 문자열 생성 (이메일 본문 생성)
                     email = render_to_string(email_template_name, c)
+                    # 이메일 전송 시도
                     try:
+                        # send_mail: Django에서 제공하는 메일 전송 함수(이메일을 보내기 위함)
                         send_mail(subject, email, settings.EMAIL_HOST_USER, [user.email], fail_silently=False)
+                    # 잘못된 헤더가 발견되면 에러 응답
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
+                    # 비밀번호 재설정 완료 페이지로 리다이렉트
                     return redirect("/password_reset/done/")
         else:
+            # 폼이 유효하지 않은 경우 에러 페이지 렌더링
             return render(request, 'wecando/password_reset_done_fail.html')
 
     else:
+        # GET 메서드로 요청이 들어온 경우 빈 폼을 생성
         password_reset_form = PasswordResetForm()
+    # 비밀번호 재설정 페이지 렌더링
     return render(
         request=request,
         template_name='wecando/password_reset.html',
