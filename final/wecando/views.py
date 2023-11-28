@@ -132,12 +132,15 @@ def signup(request):
         form = UserForm(request.POST)
         if form.is_valid():
             form.save()
-            # 인증할 때 필요한 사용자 이름과 비밀번호
-            username = form.cleaned_data.get('username')
-            raw_password = form.cleaned_data.get('password1')
-            # 사용자 생성 후에 자동 로그인 위해 authenticate(사용자 인증)와 login(로그인)사용
-            user = authenticate(username=username, password=raw_password)   # 사용자 인증
-            login(request, user)
+
+            # 자동로그인 되지 않도록 수정
+
+            # # 인증할 때 필요한 사용자 이름과 비밀번호
+            # username = form.cleaned_data.get('username')
+            # raw_password = form.cleaned_data.get('password1')
+            # # # 사용자 생성 후에 자동 로그인 위해 authenticate(사용자 인증)와 login(로그인)사용
+            # # user = authenticate(username=username, password=raw_password)   # 사용자 인증
+            # # login(request, user)
             return redirect('/')
     else:
         form = UserForm()
@@ -433,9 +436,9 @@ def write_delete(request, pk):
     # 해당일기를 받아와서 일기삭제후 calendar 페이지로 이동
     write = get_object_or_404(Writen, pk=pk)
     diary_num = write.diary_num.diary_num
+    print(diary_num)
     write.delete()
     return redirect("/calendar/"+str(diary_num)+"/")
-
 
 # 비밀번호 찾기
 def password_reset_request(request):
@@ -454,7 +457,7 @@ def password_reset_request(request):
                     email_template_name = "wecando/password_reset_email.html"
                     c = {
                         "email": user.email,
-                        'domain': "127.0.0.1:8000",
+                        'domain': "http://192.168.3.22:8000",
                         'site_name': '11:57',
                         # MTE4
                         "uid": urlsafe_base64_encode(force_bytes(user.pk)),
