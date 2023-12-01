@@ -519,7 +519,7 @@ def diary_delete(request, pk):
 # 다이어리 표지 변경
 class CoverUpdate(UpdateView):
     model = Diary   # 모델은 Diary를 사용
-
+    fields = ["img_file"]
     template_name = "wecando/cover_update.html" # 템플릿을 설정
 
     # 해당 다이어리를 받아옴
