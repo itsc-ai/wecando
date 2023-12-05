@@ -34,7 +34,7 @@
 ### 🏗️ 서버 및 DB의 구조
 
 - 서버 : 도커를 활용한 MYSQL
-  - 내부 접속만 가능하단 단점, 외부 도메인 활용하여 배포 예정
+  - 외부 도메인 : <a href="http://emotiondiary.kro.kr:8805">11:57 PM</a>
 
 - 명언 및 음악추천을 위한 DataBase 구조<br>
 ![wecando - writen](https://github.com/itsc-ai/wecando/assets/141305320/534c2c77-ba20-4c82-a09e-1300df2575ed)
@@ -159,4 +159,10 @@
    - 해당 문제를 해결하기 위해 1차적으로 글을 쓰고, 감정의 분류를 사용자가 직접 확인하게 하여 감정의 종류를 다시 한번 체크하여 명확히 분류할 수 있게끔 유도
      <br><br>
    ![감정분류 체크](https://github.com/itsc-ai/wecando/assets/141305320/6da70e77-5cbe-4246-9c03-be965f1c6bf0)
+    <br><br>
+3. Tableau 서버 연동 문제
+    - 데이터베이스와 Tableau를 연동하여 사용자의 감정 월별 통계를 활용하고자 했으나, 활용하지 못함
+    - Tableau Cloud를 활용하여 데이터베이스와 실시간 연동하고자 하였으나, 비용문제로 인해 체험판 사용
+      - 기간 : 23. 11. 27 ~ 23. 12.10
+      - 해당 기간 이후 Tableau 시각화 서비스 이용 불가
 
